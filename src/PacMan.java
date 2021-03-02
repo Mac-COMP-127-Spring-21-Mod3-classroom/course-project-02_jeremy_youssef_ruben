@@ -4,9 +4,9 @@ import java.util.zip.CheckedOutputStream;
 import edu.macalester.graphics.*;
 
 public class PacMan {
-    private final Tile[][] board = new Tile[ROWS][COLS];;
+    private final Tile[][] board = new Tile[ROWS][COLUMNS];;
     public static final int ROWS = 10;
-    public static final int COLS = 10;
+    public static final int COLUMNS = 10;
     public static final int TILE_SIDE_LENGTH = 40;
     public static final int CANVAS_WIDTH = 400;
     public static final int CANVAS_HEIGHT = 400;
@@ -43,7 +43,7 @@ public class PacMan {
             }
         });
         startGame();
-        // canvas.animate(this::animate);
+        canvas.animate(this::animate);
     }
 
     private void animate() {
@@ -58,7 +58,7 @@ public class PacMan {
 
     private void checkLost() {
         for (Ghost ghost : ghosts) {
-            if (player.getCurrentTile() == ghost.getCurrentTile()) {
+            if (player.getCurrentTile(board) == ghost.getCurrentTile(board)) {
                 loseLife();
             }
         }
@@ -76,17 +76,16 @@ public class PacMan {
 
     private void resetGame() {
         canvas.removeAll();
-        resetPlayer();
         makeBoard();
         makeGhosts();
+        resetPlayer();
     }
 
     private void resetPlayer() {
         if (player != null) {
             canvas.remove(player);
         }
-        // player = new Player(playerStartingPoint.getX(), playerStartingPoint.getY(), 0);
-        player = new Player();
+        player = new Player(playerStartingPoint.getX(), playerStartingPoint.getY(), 0);
     }
 
     private void winGame() {
@@ -143,7 +142,7 @@ public class PacMan {
     }
 
     private void makeGhosts() {
-        ghosts.add(new Ghost());
+        // ghosts.add(new Ghost());
     }
 
     private void checkEatenDot() {
