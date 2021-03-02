@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.zip.CheckedOutputStream;
 
 import edu.macalester.graphics.*;
 
 public class PacMan {
-    private final Tile[][] board = new Tile[ROWS][COLUMNS];;
+    private final Tile[][] board = new Tile[ROWS][COLS];
     public static final int ROWS = 10;
-    public static final int COLUMNS = 10;
+    public static final int COLS = 10;
     public static final int TILE_SIDE_LENGTH = 40;
     public static final int CANVAS_WIDTH = 400;
     public static final int CANVAS_HEIGHT = 400;
@@ -26,13 +25,13 @@ public class PacMan {
         canvas.onKeyDown(event -> {
             switch (event.getKey().toString()) {
                 case "LEFT_ARROW":
-                    player.changeDirection(0, board);
+                    player.changeDirection(3, board);
                     break;
                 case "RIGHT_ARROW":
-                    player.changeDirection(0, board);
+                    player.changeDirection(1, board);
                     break;
                 case "DOWN_ARROW":
-                    player.changeDirection(0, board);
+                    player.changeDirection(2, board);
                     break;
                 case "UP_ARROW":
                     player.changeDirection(0, board);
@@ -86,6 +85,7 @@ public class PacMan {
             canvas.remove(player);
         }
         player = new Player(playerStartingPoint.getX(), playerStartingPoint.getY(), 0);
+        canvas.add(player);
     }
 
     private void winGame() {

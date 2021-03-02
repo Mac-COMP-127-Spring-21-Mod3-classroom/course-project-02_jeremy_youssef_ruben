@@ -14,7 +14,7 @@ public class Sprite extends GraphicsGroup{
 
     /**
      * Sets the sprite to move one of 4 directions:
-     * North (0), east (1), south (2), or west (4).
+     * North (0), east (1), south (2), or west (3).
      * If there's an open space in that direction, the sprite will turn and return true.
      * If not, it won't turn and will return false.
      * @param board The 2d array that represents the level layout.
@@ -60,8 +60,8 @@ public class Sprite extends GraphicsGroup{
      * @param board The 2d array that represents the level layout.
      */
     public Tile getCurrentTile(Tile[][] board){
-        int xPosition = (int) (getCenter().getX() / PacMan.ROWS);
-        int yPosition = (int) (getCenter().getY() / PacMan.COLS);
+        int xPosition = (int) (getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH));
+        int yPosition = (int) (getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH));
         return board[xPosition][yPosition];
     }
 
@@ -73,9 +73,20 @@ public class Sprite extends GraphicsGroup{
      * @param yOffset The number of tiles above (negative) or below (positive).
      */
     public Tile getNearbyTile(Tile[][] board, int xOffset, int yOffset){
-        int xPosition = (int) (getCenter().getX() / PacMan.ROWS);
-        int yPosition = (int) (getCenter().getY() / PacMan.COLS);
-        return board[xOffset + xPosition][yOffset + yPosition];
+        int xPosition = (int) (getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH));
+        int yPosition = (int) (getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH));
+        return board[wrapTileChecker(xOffset + xPosition, true)][wrapTileChecker(yOffset + yPosition, false)];
+    }
+
+    private int wrapTileChecker(int position, boolean isX) {
+        int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
+        if (position < 0) {
+            return toCheck-1;
+        } else if (position > toCheck) {
+            return 0;
+        } else {
+            return position;
+        }
     }
 
     public boolean isInCenter(Tile[][] board){
