@@ -86,6 +86,7 @@ public class PacMan {
         }
         player = new Player(playerStartingPoint.getX(), playerStartingPoint.getY(), 0);
         canvas.add(player);
+        player.setCenter(playerStartingPoint);
     }
 
     private void winGame() {

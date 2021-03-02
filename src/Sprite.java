@@ -27,30 +27,31 @@ public class Sprite extends GraphicsGroup{
         
         //Types: 0 you can move through, 1 you can't, 2 only ghosts can
         //TODO: Delete this comment when it's no longer needed
-        if(direction == 0){
-            if(getNearbyTile(board, 0, -1).getType() == 0){
-                this.direction = 0;
-                return true;        
-            }
-        }
-        else if(direction == 1){
-            if(getNearbyTile(board, 1, 0).getType() == 0){
-                this.direction = 1;
-                return true;
-            }
-        }
-        else if(direction == 2){
-            if(getNearbyTile(board, 0, 1).getType() == 0){
-                this.direction = 2;
-                return true;
-            }
-        }
-        else if(direction == 3){
-            if(getNearbyTile(board, -1, 0).getType() == 0){
-                this.direction = 3;
-                return true;
-            }
-        }
+        this.direction = direction;
+        // if(direction == 0){
+        //     if(getNearbyTile(board, 0, -1).getType() == 0){
+        //         this.direction = 0;
+        //         return true;        
+        //     }
+        // }
+        // else if(direction == 1){
+        //     if(getNearbyTile(board, 1, 0).getType() == 0){
+        //         this.direction = 1;
+        //         return true;
+        //     }
+        // }
+        // else if(direction == 2){
+        //     if(getNearbyTile(board, 0, 1).getType() == 0){
+        //         this.direction = 2;
+        //         return true;
+        //     }
+        // }
+        // else if(direction == 3){
+        //     if(getNearbyTile(board, -1, 0).getType() == 0){
+        //         this.direction = 3;
+        //         return true;
+        //     }
+        // }
 
         return false;
     }
@@ -60,8 +61,8 @@ public class Sprite extends GraphicsGroup{
      * @param board The 2d array that represents the level layout.
      */
     public Tile getCurrentTile(Tile[][] board){
-        int xPosition = (int) (getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH));
-        int yPosition = (int) (getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH));
+        int xPosition = (int) (10*(getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
+        int yPosition = (int) (10*(getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
         return board[xPosition][yPosition];
     }
 
@@ -73,8 +74,8 @@ public class Sprite extends GraphicsGroup{
      * @param yOffset The number of tiles above (negative) or below (positive).
      */
     public Tile getNearbyTile(Tile[][] board, int xOffset, int yOffset){
-        int xPosition = (int) (getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH));
-        int yPosition = (int) (getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH));
+        int xPosition = (int) (10*(getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
+        int yPosition = (int) (10*(getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
         return board[wrapTileChecker(xOffset + xPosition, true)][wrapTileChecker(yOffset + yPosition, false)];
     }
 
@@ -90,10 +91,17 @@ public class Sprite extends GraphicsGroup{
     }
 
     public boolean isInCenter(Tile[][] board){
-        if(getCurrentTile(board).getCenter().getX() == getCenter().getX()){
+        double tileX = getCurrentTile(board).getCenter().getX() + 2.5;
+        double tileY = getCurrentTile(board).getCenter().getY() - 0.5;
+        Point betterTileCenter = new Point(tileX, tileY);
+        if(betterTileCenter.equals(getCenter())){
+
             return true;
         }
+        System.out.println("Tile: " + betterTileCenter);
+        System.out.println("Sprite: " + getCenter());
         return false;
+        
     }
 
     private boolean isTurningAround(){
@@ -124,10 +132,38 @@ public class Sprite extends GraphicsGroup{
         setCenter(toMove);
     }
 
+    public boolean hitsWall(Tile[][]board, int direction){
+        if (direction == 0) {
+            if (getNearbyTile(board, 0, -1).getType() == 0) {
+                return false;
+            }
+        } else if (direction == 1) {
+            if (getNearbyTile(board, 1, 0).getType() == 0) {
+                return false;
+            }
+        } else if (direction == 2) {
+            if (getNearbyTile(board, 0, 1).getType() == 0) {
+                return false;
+            }
+        } else if (direction == 3) {
+            if (getNearbyTile(board, -1, 0).getType() == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void updatePos(Tile[][] board) {
+        //System.out.println("Sprite center: " + getCenter());
+        //System.out.println("Tile center: " + getCurrentTile(board).getCenter());
         //if the dude is just turning around, that can happen immediately
         if(isInCenter(board) || isTurningAround()){
-            realDirection = direction;
+            if(!hitsWall(board, direction)){
+                realDirection = direction;
+            }
+            if(hitsWall(board, realDirection)){
+                return;
+            }
         }
 
         if(realDirection == 0){
