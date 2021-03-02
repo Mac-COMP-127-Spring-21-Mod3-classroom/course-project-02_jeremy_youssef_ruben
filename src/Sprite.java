@@ -61,7 +61,7 @@ public class Sprite extends GraphicsGroup{
      */
     public Tile getCurrentTile(Tile[][] board){
         int xPosition = (int) (getCenter().getX() / PacMan.ROWS);
-        int yPosition = (int) (getCenter().getY() / PacMan.COLUMNS);
+        int yPosition = (int) (getCenter().getY() / PacMan.COLS);
         return board[xPosition][yPosition];
     }
 
@@ -74,7 +74,7 @@ public class Sprite extends GraphicsGroup{
      */
     public Tile getNearbyTile(Tile[][] board, int xOffset, int yOffset){
         int xPosition = (int) (getCenter().getX() / PacMan.ROWS);
-        int yPosition = (int) (getCenter().getY() / PacMan.COLUMNS);
+        int yPosition = (int) (getCenter().getY() / PacMan.COLS);
         return board[xOffset + xPosition][yOffset + yPosition];
     }
 
@@ -91,7 +91,21 @@ public class Sprite extends GraphicsGroup{
                 return true;
             }
         }
-
+        else if(realDirection == 1){
+            if(direction == 3){
+                return true;
+            }
+        }
+        else if(realDirection == 2){
+            if(direction == 0){
+                return true;
+            }
+        }
+        else if(realDirection == 3){
+            if(direction == 1){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -100,12 +114,26 @@ public class Sprite extends GraphicsGroup{
     }
 
     public void updatePos(Tile[][] board) {
+        //if the dude is just turning around, that can happen immediately
         if(isInCenter(board) || isTurningAround()){
             realDirection = direction;
-            
         }
-        else{
-            //
+
+        if(realDirection == 0){
+            Point newPos = new Point(getCenter().getX(), getCenter().getY() - 1);
+            moveTo(newPos);
+        }
+        else if(realDirection == 1){
+            Point newPos = new Point(getCenter().getX() + 1, getCenter().getY());
+            moveTo(newPos);
+        }
+        else if(realDirection == 2){
+            Point newPos = new Point(getCenter().getX(), getCenter().getY() + 1);
+            moveTo(newPos);
+        }
+        else if(realDirection == 3){
+            Point newPos = new Point(getCenter().getX() - 1, getCenter().getY());
+            moveTo(newPos);
         }
     }
 }
