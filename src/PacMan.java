@@ -26,19 +26,15 @@ public class PacMan {
             switch (event.getKey().toString()) {
                 case "LEFT_ARROW":
                     player.changeDirection(3);
-                    player.setRotation(-180); 
                     break;
                 case "RIGHT_ARROW":
                     player.changeDirection(1);
-                    player.setRotation(0);
                     break;
                 case "DOWN_ARROW":
                     player.changeDirection(2);
-                    player.setRotation(90);
                     break;
                 case "UP_ARROW":
                     player.changeDirection(0);
-                    player.setRotation(-90);
                     break;
             
                 default:
