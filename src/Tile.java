@@ -2,17 +2,18 @@ import java.awt.Color;
 import edu.macalester.graphics.*;
 
 public class Tile extends GraphicsGroup{
-    private final int TYPE;
+    private int type;
     private boolean hasDot;
     private Ellipse dotShape;
     private Point center;
 
     public Tile(int type, Point point) {
-        this.TYPE = type;
+        this.type = type;
         this.center = point;
         switch (type) {
             case 0:
-                addDotTile();
+                makeEmptyTile();
+                addDot();
                 break;
             case 1:
                 makeWall();
@@ -20,17 +21,25 @@ public class Tile extends GraphicsGroup{
             case 2:
                 makeGhostArea();
                 break;
+            case 4:
+                makeEmptyTile();
+                this.type = 0;
+                break;
         
             default:
                 break;
         }
     }
 
-    private void addDotTile() {
+    private void addDot() {
         hasDot = true;
         dotShape = new Ellipse(0, 0, PacMan.DOT_SIZE, PacMan.DOT_SIZE);
         dotShape.setFillColor(Color.WHITE);
         add(dotShape);
+        dotShape.setCenter(PacMan.TILE_SIDE_LENGTH/2, PacMan.TILE_SIDE_LENGTH/2);
+    }
+
+    private void makeEmptyTile() {
         Rectangle tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
         tileShape.setFillColor(Color.BLACK);
         add(tileShape);
@@ -60,7 +69,7 @@ public class Tile extends GraphicsGroup{
     }
 
     public int getType() {
-        return TYPE;
+        return type;
     }
 
     public Boolean getHasDot() {
