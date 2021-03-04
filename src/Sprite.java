@@ -126,10 +126,26 @@ public class Sprite extends GraphicsGroup{
         return true;
     }
 
+    public void turnSprite(){
+        if(direction == 0){
+            setRotation(-90);
+        }
+        else if(direction == 1){
+            setRotation(0);
+        }
+        else if(direction == 2){
+            setRotation(90);
+        }
+        else if(direction == 3){
+            setRotation(-180);
+        }
+    }
+
     public void updatePos() {
         if(isInCenter() || isTurningAround()){
             if(!hitsWall(board, direction)){
                 realDirection = direction;
+                turnSprite();
             }
             if(hitsWall(board, realDirection)){
                 return;
