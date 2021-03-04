@@ -55,7 +55,6 @@ public class PacMan {
     }
 
     private void checkLost() {
-        // TODO: this crashes the game for some reason when the interaction happens
         for (Ghost ghost : ghosts) {
             if (Math.abs(player.getCenter().getX() - ghost.getCenter().getX()) < TILE_SIDE_LENGTH/2) {
                 if (Math.abs(player.getCenter().getY() - ghost.getCenter().getY()) < TILE_SIDE_LENGTH/2) {
