@@ -28,12 +28,13 @@ public class Tile extends GraphicsGroup{
 
     private void addDotTile() {
         hasDot = true;
-        dotShape = new Ellipse(0, 0, PacMan.DOT_SIZE, PacMan.DOT_SIZE);
-        dotShape.setFillColor(Color.WHITE);
-        add(dotShape);
         Rectangle tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
         tileShape.setFillColor(Color.BLACK);
         add(tileShape);
+        dotShape = new Ellipse(0, 0, PacMan.DOT_SIZE, PacMan.DOT_SIZE);
+        dotShape.setFillColor(Color.WHITE);
+        add(dotShape);
+        dotShape.setCenter(PacMan.TILE_SIDE_LENGTH/2, PacMan.TILE_SIDE_LENGTH/2);
     }
 
     public void removeDot() {
