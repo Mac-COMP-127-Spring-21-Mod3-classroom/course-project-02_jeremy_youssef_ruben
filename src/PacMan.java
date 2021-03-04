@@ -58,9 +58,6 @@ public class PacMan {
         for (Ghost ghost : ghosts) {
             if (Math.abs(player.getCenter().getX() - ghost.getCenter().getX()) < TILE_SIDE_LENGTH/2) {
                 if (Math.abs(player.getCenter().getY() - ghost.getCenter().getY()) < TILE_SIDE_LENGTH/2) {
-                    System.out.println("lost life");
-                    System.out.println("player " + player.getCenter());
-                    System.out.println("ghost " + ghost.getCenter());
                     loseLife();
                     break;
                 }
@@ -150,7 +147,6 @@ public class PacMan {
     }
 
     private void resetGhosts() {
-        System.out.println("happned");
         for (Ghost ghost : ghosts) {
             canvas.remove(ghost);
         }
@@ -161,7 +157,6 @@ public class PacMan {
             canvas.add(ghost);
             ghost.setCenter(point);
         }
-        System.out.println("finished");
     }
 
     private void checkEatenDot() {
