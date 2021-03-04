@@ -19,7 +19,7 @@ public class Ghost extends Sprite {
         ghostPNG.add(purpleGhost);
         ghostPNG.add(greyGhost);
         Image ghost = ghostPNG.get(rand.nextInt(ghostPNG.size()));
-        ghost.setScale(0.05);
+        ghost.setScale(0.025);
         add(ghost);
         // Rectangle shape = new Rectangle(0, 0, 10, 10);
         // shape.setFillColor(Color.RED);

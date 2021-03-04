@@ -6,10 +6,12 @@ public class PacMan {
     private final Tile[][] board = new Tile[ROWS][COLS];
     public static final int ROWS = 10;
     public static final int COLS = 10;
-    public static final int TILE_SIDE_LENGTH = 40;
+    // public static final int ROWS = 37;
+    // public static final int COLS = 3;
+    public static final int TILE_SIDE_LENGTH = 20;
     public static final int CANVAS_WIDTH = 400;
-    public static final int CANVAS_HEIGHT = 400;
-    public static final int DOT_SIZE = 6;
+    public static final int CANVAS_HEIGHT = 140;
+    public static final int DOT_SIZE = 2;
     private Point playerStartingPoint;
     private ArrayList<Point> ghostStartingPoints;
     private ArrayList<Ghost> ghosts;
@@ -114,6 +116,9 @@ public class PacMan {
         ghostStartingPoints = new ArrayList<>();
         // 0 = dot, 1 = wall, 2 = ghost start, 3 = player start (turns into 0)
         int[][] boardDesign = {
+            // {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            // {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            // {1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1},
             {0,0,0,0,0,0,0,1,1,0},
             {0,1,1,1,0,1,0,0,1,0},
             {0,1,0,0,0,1,1,0,1,0},
