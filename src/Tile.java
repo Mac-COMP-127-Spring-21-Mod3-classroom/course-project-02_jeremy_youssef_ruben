@@ -1,5 +1,4 @@
 import java.awt.Color;
-
 import edu.macalester.graphics.*;
 
 public class Tile extends GraphicsGroup{
@@ -7,9 +6,11 @@ public class Tile extends GraphicsGroup{
     private boolean hasDot;
     private Ellipse dotShape;
     private Rectangle wallShape;
+    private Point center;
 
-    public Tile(int type) {
+    public Tile(int type, Point point) {
         this.TYPE = type;
+        this.center = point;
         switch (type) {
             case 0:
                 addDot();
@@ -57,5 +58,9 @@ public class Tile extends GraphicsGroup{
 
     public Boolean getHasDot() {
         return hasDot;
+    }
+
+    public Point getTileCenter() {
+        return center;
     }
 }

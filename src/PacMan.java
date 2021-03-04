@@ -9,15 +9,15 @@ public class PacMan {
     public static final int TILE_SIDE_LENGTH = 40;
     public static final int CANVAS_WIDTH = 400;
     public static final int CANVAS_HEIGHT = 400;
-    public static final int DOT_SIZE = 5;
+    public static final int DOT_SIZE = 6;
     private Point playerStartingPoint;
-    private ArrayList<Point> ghostStartingPoints = new ArrayList<>();
-    private ArrayList<Ghost> ghosts = new ArrayList<>();
+    private ArrayList<Point> ghostStartingPoints;
+    private ArrayList<Ghost> ghosts;
     private Player player;
     private CanvasWindow canvas;
     private int numPoints = 0;
     private int totalDots = 0;
-    private int lives = 0;
+    private int lives;
 
     public PacMan() {
         canvas = new CanvasWindow("PacMan!", CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -25,40 +25,46 @@ public class PacMan {
         canvas.onKeyDown(event -> {
             switch (event.getKey().toString()) {
                 case "LEFT_ARROW":
-                    player.changeDirection(3, board);
+                    player.changeDirection(3);
                     break;
                 case "RIGHT_ARROW":
-                    player.changeDirection(1, board);
+                    player.changeDirection(1);
                     break;
                 case "DOWN_ARROW":
-                    player.changeDirection(2, board);
+                    player.changeDirection(2);
                     break;
                 case "UP_ARROW":
-                    player.changeDirection(0, board);
+                    player.changeDirection(0);
                     break;
             
                 default:
                     break;
             }
         });
-        startGame();
         canvas.animate(this::animate);
     }
 
     private void animate() {
-        player.updatePos(board);
+        player.updatePos();
         checkEatenDot();
         for (Ghost ghost : ghosts) {
-            ghost.updatePos(board);
+            ghost.updatePos();
         }
         checkLost();
         checkWon();
     }
 
     private void checkLost() {
+        // TODO: this crashes the game for some reason when the interaction happens
         for (Ghost ghost : ghosts) {
-            if (player.getCurrentTile(board) == ghost.getCurrentTile(board)) {
-                loseLife();
+            if (Math.abs(player.getCenter().getX() - ghost.getCenter().getX()) < TILE_SIDE_LENGTH/2) {
+                if (Math.abs(player.getCenter().getY() - ghost.getCenter().getY()) < TILE_SIDE_LENGTH/2) {
+                    System.out.println("lost life");
+                    System.out.println("player " + player.getCenter());
+                    System.out.println("ghost " + ghost.getCenter());
+                    loseLife();
+                    break;
+                }
             }
         }
     }
@@ -69,14 +75,14 @@ public class PacMan {
         }
     }
 
-    private void startGame() {
-
-    }
-
     private void resetGame() {
         canvas.removeAll();
+        numPoints = 0;
+        lives = 3;
         makeBoard();
-        makeGhosts();
+        ghosts = new ArrayList<>();
+        player = null;
+        resetGhosts();
         resetPlayer();
     }
 
@@ -84,9 +90,11 @@ public class PacMan {
         if (player != null) {
             canvas.remove(player);
         }
-        player = new Player(playerStartingPoint.getX(), playerStartingPoint.getY(), 0);
+        player = new Player(playerStartingPoint, 0, board);
         canvas.add(player);
-        player.setCenter(playerStartingPoint);
+        double x = playerStartingPoint.getX();
+        double y = playerStartingPoint.getY();
+        player.setCenter(new Point(x,y));
     }
 
     private void winGame() {
@@ -102,10 +110,12 @@ public class PacMan {
         if (lives == 0) {
             loseGame();
         }
+        resetGhosts();
         resetPlayer();
     }
 
     private void makeBoard() {
+        ghostStartingPoints = new ArrayList<>();
         // 0 = dot, 1 = wall, 2 = ghost start, 3 = player start (turns into 0)
         int[][] boardDesign = {
             {0,0,0,0,0,0,0,1,1,0},
@@ -114,15 +124,14 @@ public class PacMan {
             {0,1,0,1,0,0,1,0,0,0},
             {0,1,0,1,2,2,1,0,1,1},
             {0,1,0,1,1,1,1,0,0,0},
-            {0,1,0,0,0,1,0,0,1,0},
+            {0,1,0,0,3,0,0,0,1,0},
             {0,1,1,1,0,1,0,1,1,1},
             {0,1,0,0,0,1,0,1,0,1},
-            {3,0,0,1,0,0,0,0,0,0}
+            {0,0,0,1,0,0,0,0,0,0}
         };
-        int currentRow = 0;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                Point point = new Point(i*TILE_SIDE_LENGTH + TILE_SIDE_LENGTH/2, j*TILE_SIDE_LENGTH + TILE_SIDE_LENGTH/2);
+                Point point = new Point(i*TILE_SIDE_LENGTH + TILE_SIDE_LENGTH/2.0, j*TILE_SIDE_LENGTH + TILE_SIDE_LENGTH/2.0);
                 int type = boardDesign[j][i];
                 if (type == 3) {
                     playerStartingPoint = point;
@@ -130,31 +139,41 @@ public class PacMan {
                 } else if (type == 2) {
                     ghostStartingPoints.add(point);
                 }
-                Tile tile = new Tile(type);
-                board[currentRow][j] = tile;
+                Tile tile = new Tile(type, point);
+                board[i][j] = tile;
                 canvas.add(tile);
                 tile.setCenter(point);
                 if (tile.getType() == 0) {
                     totalDots++;
                 }
             }
-            currentRow++;
         }
     }
 
-    private void makeGhosts() {
-        // ghosts.add(new Ghost());
+    private void resetGhosts() {
+        System.out.println("happned");
+        for (Ghost ghost : ghosts) {
+            canvas.remove(ghost);
+        }
+        ghosts = new ArrayList<>();
+        for (Point point : ghostStartingPoints) {
+            Ghost ghost = new Ghost(point, 0, board);
+            ghosts.add(ghost);
+            canvas.add(ghost);
+            ghost.setCenter(point);
+        }
+        System.out.println("finished");
     }
 
     private void checkEatenDot() {
-        Tile tile = player.getCurrentTile(board);
+        Tile tile = player.getCurrentTile();
         if (tile.getHasDot()) {
             tile.removeDot();
+            numPoints++;
         }
     }
 
     public static void main(String[] args) {
-        PacMan game = new PacMan();
-        game.startGame();
+        new PacMan();
     }
 }

@@ -1,10 +1,10 @@
 import edu.macalester.graphics.Rectangle;
 
-public class Player extends Sprite {
+import edu.macalester.graphics.*;
 
-    public Player(double initialX, double initialY, int initialDirection) {
-        super(initialX, initialY, initialDirection);
+public class Player extends Sprite {
+    public Player(Point point, int initialDirection, Tile[][] board) {
+        super(point, initialDirection, board);
         add(new Rectangle(0, 0, 10, 10));
     }
-    
 }
