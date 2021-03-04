@@ -170,4 +170,8 @@ public class Sprite extends GraphicsGroup{
             setCenter(x, 0);
         }
     }
+
+    public int getRealDirection() {
+        return realDirection;
+    }
 }
