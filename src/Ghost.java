@@ -1,5 +1,4 @@
 import edu.macalester.graphics.*;
-import java.awt.Color;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
