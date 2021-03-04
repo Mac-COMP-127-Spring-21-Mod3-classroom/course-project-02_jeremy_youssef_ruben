@@ -52,6 +52,8 @@ public class Sprite extends GraphicsGroup{
         return new int[] {xPosition,yPosition};
     }
 
+    //TODO: Check to make sure this does what I think it does (checks what tile is on the other
+    //side) before writing incorrect Javadoc
     private int wrapTileChecker(int position, boolean isX) {
         int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
         if (position < 0) {
@@ -63,6 +65,10 @@ public class Sprite extends GraphicsGroup{
         }
     }
 
+    /**
+     * Returns true if this sprite is directly in the center of whatever tile it's in,
+     * returns false otherwise.
+     */
     public boolean isInCenter(){
         double tileX = getCurrentTile().getTileCenter().getX();
         double tileY = getCurrentTile().getTileCenter().getY();
@@ -77,6 +83,11 @@ public class Sprite extends GraphicsGroup{
         
     }
 
+    /**
+     * Returns true if the sprite is planning to turn in the opposite direction
+     * from what it's facing. (Left to right, right to left, up to down, or down to up.)
+     * Returns false otherwise.
+     */
     private boolean isTurningAround(){
         if(realDirection == 0){
             if(direction == 2){
@@ -101,10 +112,20 @@ public class Sprite extends GraphicsGroup{
         return false;
     }
 
+    /**
+     * Moves the sprite's center to the given location.
+     */
     public void moveTo(Point toMove) {
         setCenter(toMove);
     }
 
+    /**
+     * Determines if there's a wall in front of the sprite.
+     * @param board The array that contains the level layout.
+     * @param direction The direction that the sprite is moving.
+     * @return False if there's an open tile in front of the sprite, true if there's
+     * anything else.
+     */
     public boolean hitsWall(Tile[][]board, int direction){
         if (direction == 0) {
             if (getNearbyTile(0, -1).getType() == 0) {
@@ -126,21 +147,29 @@ public class Sprite extends GraphicsGroup{
         return true;
     }
 
+    /**
+     * Changes the direction that the sprite is facing to match the actual direction
+     * that it's moving. Note that this is a graphical change only.
+     */
     public void turnSprite(){
-        if(direction == 0){
+        if(realDirection == 0){
             setRotation(-90);
         }
-        else if(direction == 1){
+        else if(realDirection == 1){
             setRotation(0);
         }
-        else if(direction == 2){
+        else if(realDirection == 2){
             setRotation(90);
         }
-        else if(direction == 3){
+        else if(realDirection == 3){
             setRotation(-180);
         }
     }
 
+    /**
+     * Moves the sprite forward by one pixel in whatever direction it's facing, turning
+     * the sprite if it's able to and wants to.
+     */
     public void updatePos() {
         if(isInCenter() || isTurningAround()){
             if(!hitsWall(board, direction)){
@@ -170,6 +199,10 @@ public class Sprite extends GraphicsGroup{
         checkWrapAround();
     }
 
+    /**
+     * Checks whether the sprite is out of bounds, and moves it to the other side of
+     * the canvas if it is.
+     */
     private void checkWrapAround() {
         double x = getCenter().getX();
         double y = getCenter().getY();
@@ -187,6 +220,10 @@ public class Sprite extends GraphicsGroup{
         }
     }
 
+    /**
+     * Returns the actual direction that the sprite is moving, NOT the
+     * direction that it's queued to turn.
+     */
     public int getRealDirection() {
         return realDirection;
     }
