@@ -7,7 +7,7 @@ public class PacMan {
     // public static final int ROWS = 10;
     // public static final int COLS = 10;
     public static final int ROWS = 36;
-    public static final int COLS = 11;
+    public static final int COLS = 12;
     public static final int TILE_SIDE_LENGTH = 20;
     public static final int CANVAS_WIDTH = 720;
     public static final int CANVAS_HEIGHT = 600;
