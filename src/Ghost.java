@@ -37,7 +37,7 @@ public class Ghost extends Sprite {
                 else if (random == 0 && super.getRealDirection() == 2) continue;
                 else if (random == 2 && super.getRealDirection() == 0) continue;
                 else if (random == 1 && super.getRealDirection() == 3) continue;
-                else if (random == 1 && super.getRealDirection() == 3) continue;
+                else if (random == 3 && super.getRealDirection() == 1) continue;
                 break;
             }
             super.changeDirection(random);
