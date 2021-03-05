@@ -6,6 +6,7 @@ public class Tile extends GraphicsGroup{
     private boolean hasDot;
     private Ellipse dotShape;
     private Point center;
+    private Rectangle tileShape;
 
     public Tile(int type, Point point) {
         this.type = type;
@@ -39,8 +40,12 @@ public class Tile extends GraphicsGroup{
         dotShape.setCenter(PacMan.TILE_SIDE_LENGTH/2, PacMan.TILE_SIDE_LENGTH/2);
     }
 
+    public void setTileFillColor(Color color) {
+        this.tileShape.setFillColor(color);
+    }
+
     private void makeEmptyTile() {
-        Rectangle tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
+        tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
         tileShape.setFillColor(Color.BLACK);
         add(tileShape);
     }
@@ -53,16 +58,16 @@ public class Tile extends GraphicsGroup{
     }
 
     private void makeWall() {
-        Rectangle wallShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH-1, PacMan.TILE_SIDE_LENGTH-1);
-        wallShape.setFillColor(Color.BLACK);
-        wallShape.setStrokeColor(Color.BLUE);
-        add(wallShape);
+        tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH-1, PacMan.TILE_SIDE_LENGTH-1);
+        tileShape.setFillColor(Color.BLACK);
+        tileShape.setStrokeColor(Color.BLUE);
+        add(tileShape);
     }
     
     private void makeGhostArea() {
-        Rectangle wallShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
-        wallShape.setFillColor(Color.BLACK);
-        add(wallShape);
+        tileShape = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, PacMan.TILE_SIDE_LENGTH);
+        tileShape.setFillColor(Color.BLACK);
+        add(tileShape);
         Rectangle topLine = new Rectangle(0, 0, PacMan.TILE_SIDE_LENGTH, 1);
         topLine.setStrokeColor(Color.WHITE);
         add(topLine);
