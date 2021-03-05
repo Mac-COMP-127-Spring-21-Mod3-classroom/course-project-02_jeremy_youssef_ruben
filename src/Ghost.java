@@ -105,13 +105,14 @@ public class Ghost extends Sprite {
     /**
      * updates what node the ghost is currently
     */
-    private void updateActualCurrentNode() {
+    private Node updateActualCurrentNode() {
         for (Node node : allNodes) {
             if (board[node.getxBoardPos()][node.getyBoardPos()] == getCurrentTile()) {
                 actualCurrentNode = node;
-                return;
+                return actualCurrentNode;
             }
         }
+        return null;
     }
 
     /**
@@ -138,7 +139,7 @@ public class Ghost extends Sprite {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
             startingNode = actualCurrentNode;
-        } while (targetNode.isWall());
+        } while (targetNode.isWall() && targetNode == updateActualCurrentNode());
         // for visualizing a star
         board[targetNode.getxBoardPos()][targetNode.getyBoardPos()].setTileFillColor(Color.RED);
     }
