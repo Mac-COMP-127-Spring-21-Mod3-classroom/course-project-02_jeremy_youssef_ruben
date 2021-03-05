@@ -6,9 +6,9 @@ public class PacMan {
     private final Tile[][] board = new Tile[ROWS][COLS];
     public static final int ROWS = 10;
     public static final int COLS = 10;
-    public static final int TILE_SIDE_LENGTH = 20;
-    public static final int CANVAS_WIDTH = 200;
-    public static final int CANVAS_HEIGHT = 200;
+    public static final int TILE_SIDE_LENGTH = 40;
+    public static final int CANVAS_WIDTH = 400;
+    public static final int CANVAS_HEIGHT = 400;
     public static final int DOT_SIZE = 2;
     private Point playerStartingPoint;
     private ArrayList<Point> ghostStartingPoints;
@@ -19,6 +19,9 @@ public class PacMan {
     private int totalDots = 0;
     private int lives;
 
+    /**
+     * the main pacman game class
+     */
     public PacMan() {
         canvas = new CanvasWindow("PacMan!", CANVAS_WIDTH, CANVAS_HEIGHT);
         resetGame();
@@ -44,6 +47,9 @@ public class PacMan {
         canvas.animate(this::animate);
     }
 
+    /**
+     * the main animation loop for the game
+     */
     private void animate() {
         player.updatePos();
         checkEatenDot();
@@ -110,6 +116,9 @@ public class PacMan {
         resetPlayer();
     }
 
+    /**
+     * creates the board of tiles given by the boardDesign variable in this function
+     */
     private void makeBoard() {
         ghostStartingPoints = new ArrayList<>();
         // 0 = dot, 1 = wall, 2 = ghost start, 3 = player start (turns into 0), 4 = void
@@ -150,7 +159,7 @@ public class PacMan {
             {0,1,1,1,0,1,0,0,1,0},
             {0,1,0,0,0,1,1,0,1,0},
             {0,1,0,1,0,0,1,0,0,0},
-            {0,1,0,1,2,2,1,0,1,1},
+            {0,1,0,1,2,0,1,0,1,1},
             {0,1,0,1,1,1,1,0,0,0},
             {0,1,0,0,3,0,0,0,1,0},
             {0,1,1,1,0,1,0,1,1,1},
@@ -191,6 +200,9 @@ public class PacMan {
         }
     }
 
+    /**
+     * checks if the player has a dot to eat in the tile it is in, removes the dot and adds a point if it does
+     */
     private void checkEatenDot() {
         Tile tile = player.getCurrentTile();
         if (tile.getHasDot()) {

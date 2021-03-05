@@ -7,17 +7,15 @@ public class Sprite extends GraphicsGroup{
     private int realDirection;
     private Tile[][] board;
     
-    public Sprite(Point point, int initialDirection, Tile[][] board) {
+    public Sprite(Point center, int initialDirection, Tile[][] board) {
         this.board = board;
-        setCenter(point);
+        setCenter(center);
         changeDirection(direction);
     }
 
     /**
      * Sets the sprite to move one of 4 directions:
      * North (0), east (1), south (2), or west (3).
-     * If there's an open space in that direction, the sprite will turn and return true.
-     * If not, it won't turn.
      * @param board The 2d array that represents the level layout.
      */
     public void changeDirection(int direction) {
@@ -29,16 +27,14 @@ public class Sprite extends GraphicsGroup{
 
     /**
      * Returns the tile that the sprite's center is within.
-     * @param board The 2d array that represents the level layout.
      */
     public Tile getCurrentTile(){
         return board[wrapTileChecker(getTileXY()[0], true)][wrapTileChecker(getTileXY()[1], false)];
     }
 
     /**
-     * Returns the tile xOffset to the left/right of the sprite and
+     * @return the tile xOffset to the left/right of the sprite and
      * yOffset to the top/bottom of the sprite.
-     * @param board The 2d array that represents the level layout.
      * @param xOffset The number of tiles to the left (negative) or right (positive).
      * @param yOffset The number of tiles above (negative) or below (positive).
      */
@@ -52,8 +48,11 @@ public class Sprite extends GraphicsGroup{
         return new int[] {xPosition,yPosition};
     }
 
-    //TODO: Check to make sure this does what I think it does (checks what tile is on the other
-    //side) before writing incorrect Javadoc
+    /**
+     * @return what tile position to look at (adjusted so that -1 turns into the max, and anything over the max turns into 0)
+     * @param position what position we want to look at
+     * @param isX are we looking at the rows? if fasle, then look at columns
+     */
     private int wrapTileChecker(int position, boolean isX) {
         int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
         if (position < 0) {
@@ -66,8 +65,7 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
-     * Returns true if this sprite is directly in the center of whatever tile it's in,
-     * returns false otherwise.
+     * @return returns true if this sprite is directly in the center of whatever tile it's in, returns false otherwise.
      */
     public boolean isInCenter(){
         double tileX = getCurrentTile().getTileCenter().getX();
@@ -84,9 +82,8 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
-     * Returns true if the sprite is planning to turn in the opposite direction
-     * from what it's facing. (Left to right, right to left, up to down, or down to up.)
-     * Returns false otherwise.
+     * @return returns true if the sprite is planning to turn in the opposite direction from what it's facing. Returns false otherwise.
+     * (Left to right, right to left, up to down, or down to up.)
      */
     private boolean isTurningAround(){
         if(realDirection == 0){
@@ -113,20 +110,11 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
-     * Moves the sprite's center to the given location.
-     */
-    public void moveTo(Point toMove) {
-        setCenter(toMove);
-    }
-
-    /**
      * Determines if there's a wall in front of the sprite.
-     * @param board The array that contains the level layout.
-     * @param direction The direction that the sprite is moving.
-     * @return False if there's an open tile in front of the sprite, true if there's
-     * anything else.
+     * @param direction The direction that the sprite is moving or trying to move.
+     * @return False if there's an open tile in front of the sprite, true if there's anything else.
      */
-    public boolean hitsWall(Tile[][]board, int direction){
+    public boolean hitsWall(int direction){
         if (direction == 0) {
             if (getNearbyTile(0, -1).getType() == 0) {
                 return false;
@@ -172,29 +160,29 @@ public class Sprite extends GraphicsGroup{
      */
     public void updatePos() {
         if(isInCenter() || isTurningAround()){
-            if(!hitsWall(board, direction)){
+            if(!hitsWall(direction)){
                 realDirection = direction;
                 turnSprite();
             }
-            if(hitsWall(board, realDirection)){
+            if(hitsWall(realDirection)){
                 return;
             }
         }
         if(realDirection == 0){
             Point newPos = new Point(getCenter().getX(), getCenter().getY() - 1);
-            moveTo(newPos);
+            setCenter(newPos);
         }
         else if(realDirection == 1){
             Point newPos = new Point(getCenter().getX() + 1, getCenter().getY());
-            moveTo(newPos);
+            setCenter(newPos);
         }
         else if(realDirection == 2){
             Point newPos = new Point(getCenter().getX(), getCenter().getY() + 1);
-            moveTo(newPos);
+            setCenter(newPos);
         }
         else if(realDirection == 3){
             Point newPos = new Point(getCenter().getX() - 1, getCenter().getY());
-            moveTo(newPos);
+            setCenter(newPos);
         }
         checkWrapAround();
     }

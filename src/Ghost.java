@@ -20,8 +20,14 @@ public class Ghost extends Sprite {
     private List<Node> pathToTarget;
     private Node actualCurrentNode;
 
-    public Ghost(Point point, int initialDirection, Tile[][] board) {
-        super(point, initialDirection, board);
+    /**
+     * a ghost in the game of pacman
+     * @param center the spot to spawn the ghost
+     * @param initialDirection 0-3, the direction the ghost should begin by traveling
+     * @param board the board that the game is being played on
+     */
+    public Ghost(Point center, int initialDirection, Tile[][] board) {
+        super(center, initialDirection, board);
         this.board = board;
         generateAllNodesList();
         actualCurrentNode = startingNode;
@@ -36,6 +42,11 @@ public class Ghost extends Sprite {
         add(ghost);
     }
 
+    /**
+     * the ghost's updatePos function is responsible for telling the ghost where to go to follow its path
+     * at the end of this method, it calls its super's updatePos function
+     */
+    @Override
     public void updatePos() {
         // if (count > 100) {
         //     int random;
@@ -91,6 +102,9 @@ public class Ghost extends Sprite {
         count++;
     }
 
+    /**
+     * updates what node the ghost is currently
+    */
     private void updateActualCurrentNode() {
         for (Node node : allNodes) {
             if (board[node.getxBoardPos()][node.getyBoardPos()] == getCurrentTile()) {
@@ -100,6 +114,9 @@ public class Ghost extends Sprite {
         }
     }
 
+    /**
+     * updates the local variable allNodes to be an accurate list of nodes representing the board given in the constructor
+     */
     private void generateAllNodesList() {
         for (int i = 0; i < PacMan.ROWS; i++) {
             for (int j = 0; j < PacMan.COLS; j++) {
@@ -113,6 +130,10 @@ public class Ghost extends Sprite {
         }
     }
 
+    /**
+     * sets a new target node
+     * TODO: this needs to be updated to be closer and closer to the player
+     */
     private void setNewTargetNode() {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
@@ -122,8 +143,11 @@ public class Ghost extends Sprite {
         board[targetNode.getxBoardPos()][targetNode.getyBoardPos()].setTileFillColor(Color.RED);
     }
 
+    /**
+     * gets the Neighbouring nodes of the given node
+     * TODO: right now it doesnt know about wrapping
+     */
     private List<Node> getNeighbours(Node currentNode) {
-        // todo: right now it doesnt know about wrapping
         List<Node> neighbours = new ArrayList<>();
         for (Node node : allNodes) {
             if (node.getxBoardPos() == currentNode.getxBoardPos() 
@@ -136,6 +160,10 @@ public class Ghost extends Sprite {
         return neighbours;
     }
 
+    /**
+     * this is the hueristic function that a* uses to determine what path to take
+     * it takes two nodes and returns the absolute distance between them
+     */
     private int getDistance(Node currentNode, Node neighbour) {
         return ((Math.abs(neighbour.getxBoardPos() - currentNode.getxBoardPos())) + (Math.abs(neighbour.getyBoardPos() - currentNode.getyBoardPos())));
     }
@@ -150,7 +178,11 @@ public class Ghost extends Sprite {
         Collections.reverse(pathToTarget);
     }
 
-    // credit to this tutorial for some of the code (adapted for java and pacman by me): https://www.youtube.com/watch?v=mZfyt03LDH4
+    /**
+     * credit to this tutorial for some of the code (adapted for java and pacman by us): https://www.youtube.com/watch?v=mZfyt03LDH4
+     * implementation of the a* pathfinding algorithm
+     * this function's purpose is to update the local variable pathToTargetNode
+     */
     private void doAStar() {
         List<Node> openList = new ArrayList<>();
         openList.add(startingNode);

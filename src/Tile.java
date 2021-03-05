@@ -8,9 +8,17 @@ public class Tile extends GraphicsGroup{
     private Point center;
     private Rectangle tileShape;
 
-    public Tile(int type, Point point) {
+    /**
+     * @param type what type of tile is this?
+     * @param center where is this tile in space?
+     * type 0: normal tile with dot
+     * type 1: a wall tile
+     * type 2: a ghost spawning area
+     * type 4: normal tile with no dot (side tunnels)
+     */
+    public Tile(int type, Point center) {
         this.type = type;
-        this.center = point;
+        this.center = center;
         switch (type) {
             case 0:
                 makeEmptyTile();
@@ -32,6 +40,9 @@ public class Tile extends GraphicsGroup{
         }
     }
 
+    /**
+     * adds a dot to the tile
+     */
     private void addDot() {
         hasDot = true;
         dotShape = new Ellipse(0, 0, PacMan.DOT_SIZE, PacMan.DOT_SIZE);
@@ -40,6 +51,9 @@ public class Tile extends GraphicsGroup{
         dotShape.setCenter(PacMan.TILE_SIDE_LENGTH/2, PacMan.TILE_SIDE_LENGTH/2);
     }
 
+    /**
+     * sets the tile's fill color, used for visualizing a star pathfinding
+     */
     public void setTileFillColor(Color color) {
         this.tileShape.setFillColor(color);
     }
@@ -50,6 +64,9 @@ public class Tile extends GraphicsGroup{
         add(tileShape);
     }
 
+    /**
+     * if the tile has a dot, removes it
+     */
     public void removeDot() {
         if (hasDot == true) {
             remove(dotShape);

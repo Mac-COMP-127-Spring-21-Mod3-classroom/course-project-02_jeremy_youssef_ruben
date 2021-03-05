@@ -7,6 +7,9 @@ public class Node {
     private int gCost;
     private int hCost;
 
+    /**
+     * this is a node object to be used in the ghost's pathfinding
+     */
     public Node(int xBoardPos, int yBoardPos, Tile[][] board, boolean isGhostStart) {
         this.xBoardPos = xBoardPos;
         this.yBoardPos = yBoardPos;
