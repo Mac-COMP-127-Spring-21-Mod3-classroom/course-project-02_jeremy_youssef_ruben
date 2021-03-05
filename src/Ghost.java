@@ -169,6 +169,13 @@ public class Ghost extends Sprite {
         return ((Math.abs(neighbour.getxBoardPos() - currentNode.getxBoardPos())) + (Math.abs(neighbour.getyBoardPos() - currentNode.getyBoardPos())));
     }
 
+    /**
+     * this function is called once a* has found a path.
+     * this traces the path back up through the parent nodes of each node
+     * since a* updates the parent node of the end node to be the one on the path, and that node's parent
+     * to be the next one on the path, this functino retraces that and puts the nodes (in order)
+     * into the instance variable pathToTarget
+     */
     private void retracePath(Node startNode, Node endNode) {
         pathToTarget = new ArrayList<>();
         Node currentNode = endNode;
@@ -182,7 +189,7 @@ public class Ghost extends Sprite {
     /**
      * credit to this tutorial for some of the code (adapted for java and pacman by us): https://www.youtube.com/watch?v=mZfyt03LDH4
      * implementation of the a* pathfinding algorithm
-     * this function's purpose is to update the local variable pathToTargetNode
+     * this function's purpose is to update the instance variable pathToTargetNode
      */
     private void doAStar() {
         List<Node> openList = new ArrayList<>();
