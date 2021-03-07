@@ -13,7 +13,7 @@ public class Node {
     public Node(int xBoardPos, int yBoardPos, Tile[][] board, boolean isGhostStart) {
         this.xBoardPos = xBoardPos;
         this.yBoardPos = yBoardPos;
-        this.isWall = board[xBoardPos][yBoardPos].getType()==1 ? true : false;
+        this.isWall = board[yBoardPos][xBoardPos].getType()==1 ? true : false;
         if (isGhostStart) this.isWall = false;
     }
 

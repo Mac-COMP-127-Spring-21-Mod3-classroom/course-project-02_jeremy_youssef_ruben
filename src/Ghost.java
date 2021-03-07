@@ -73,10 +73,10 @@ public class Ghost extends Sprite {
 
         updateActualCurrentNode();
         if (pathToTarget.size() == 0) {
-            // for visualizing a star
-            for (Node node : allNodes) {
-                board[node.getxBoardPos()][node.getyBoardPos()].setTileFillColor(Color.BLACK);
-            }
+            // for visualizing a star:
+            // for (Node node : allNodes) {
+            //     board[node.getyBoardPos()][node.getxBoardPos()].setTileFillColor(Color.BLACK);
+            // }
             setNewTargetNode();
             doAStar();
         }
@@ -85,8 +85,8 @@ public class Ghost extends Sprite {
             pathToTarget.remove(nextNode);
             if (pathToTarget.size() == 0) return;
             nextNode = pathToTarget.get(0);
-            // for visualizing a star
-            board[nextNode.getxBoardPos()][nextNode.getyBoardPos()].setTileFillColor(Color.BLUE);
+            // for visualizing a star:
+            // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
         }
         if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() < 0) {
             changeDirection(3);
@@ -107,7 +107,7 @@ public class Ghost extends Sprite {
     */
     private Node updateActualCurrentNode() {
         for (Node node : allNodes) {
-            if (board[node.getxBoardPos()][node.getyBoardPos()] == getCurrentTile()) {
+            if (board[node.getyBoardPos()][node.getxBoardPos()] == getNearbyTile(0,0)) {
                 actualCurrentNode = node;
                 return actualCurrentNode;
             }
@@ -121,11 +121,11 @@ public class Ghost extends Sprite {
     private void generateAllNodesList() {
         for (int i = 0; i < PacMan.ROWS; i++) {
             for (int j = 0; j < PacMan.COLS; j++) {
-                if (board[i][j] == getCurrentTile()) {
-                    allNodes[i*PacMan.ROWS + j] = new Node(i, j, board, true);
-                    startingNode = allNodes[i*PacMan.ROWS + j];
+                if (board[i][j] == getNearbyTile(0,0)) {
+                    allNodes[i*(PacMan.COLS) + j] = new Node(j, i, board, true);
+                    startingNode = allNodes[i*(PacMan.COLS) + j];
                 } else {
-                    allNodes[i*PacMan.ROWS + j] = new Node(i, j, board, false);
+                    allNodes[i*(PacMan.COLS) + j] = new Node(j, i, board, false);
                 }
             }
         }
@@ -139,9 +139,10 @@ public class Ghost extends Sprite {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
             startingNode = actualCurrentNode;
-        } while (targetNode.isWall() && targetNode == updateActualCurrentNode());
-        // for visualizing a star
-        board[targetNode.getxBoardPos()][targetNode.getyBoardPos()].setTileFillColor(Color.RED);
+            System.out.println(targetNode);
+        } while (targetNode.isWall() || targetNode == updateActualCurrentNode());
+        // for visualizing a star:
+        // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
     }
 
     /**

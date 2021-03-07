@@ -26,25 +26,18 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
-     * Returns the tile that the sprite's center is within.
-     */
-    public Tile getCurrentTile(){
-        return board[wrapTileChecker(getTileXY()[0], true)][wrapTileChecker(getTileXY()[1], false)];
-    }
-
-    /**
      * @return the tile xOffset to the left/right of the sprite and
      * yOffset to the top/bottom of the sprite.
      * @param xOffset The number of tiles to the left (negative) or right (positive).
      * @param yOffset The number of tiles above (negative) or below (positive).
      */
     public Tile getNearbyTile(int xOffset, int yOffset){
-        return board[wrapTileChecker(xOffset + getTileXY()[0], true)][wrapTileChecker(yOffset + getTileXY()[1], false)];
+        return board[wrapTileChecker(yOffset + getTileXY()[1], false)][wrapTileChecker(xOffset + getTileXY()[0], true)];
     }
 
     private int[] getTileXY() {
-        int xPosition = (int) (10*(getCenter().getX() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
-        int yPosition = (int) (10*(getCenter().getY() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
+        int xPosition = (int) (PacMan.COLS*(getCenter().getX() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
+        int yPosition = (int) (PacMan.ROWS*(getCenter().getY() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
         return new int[] {xPosition,yPosition};
     }
 
@@ -68,10 +61,10 @@ public class Sprite extends GraphicsGroup{
      * @return returns true if this sprite is directly in the center of whatever tile it's in, returns false otherwise.
      */
     public boolean isInCenter(){
-        double tileX = getCurrentTile().getTileCenter().getX();
-        double tileY = getCurrentTile().getTileCenter().getY();
+        double tileX = getNearbyTile(0,0).getTileCenter().getX();
+        double tileY = getNearbyTile(0,0).getTileCenter().getY();
         // System.out.println("TILE: " + new Point(tileX, tileY));
-        // System.out.println("TILE (center): " + getCurrentTile().getCenter());
+        // System.out.println("TILE (center): " + getNearbyTile(0,0).getCenter());
         // System.out.println("PLAYER: " + getCenter());
         Point betterTileCenter = new Point(tileX, tileY);
         if(betterTileCenter.equals(getCenter())){
@@ -115,6 +108,7 @@ public class Sprite extends GraphicsGroup{
      * @return False if there's an open tile in front of the sprite, true if there's anything else.
      */
     public boolean hitsWall(int direction){
+        // North (0), east (1), south (2), or west (3).
         if (direction == 0) {
             if (getNearbyTile(0, -1).getType() == 0) {
                 return false;
