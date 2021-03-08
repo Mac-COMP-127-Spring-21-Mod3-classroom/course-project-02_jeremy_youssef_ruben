@@ -205,6 +205,19 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
+     * Returns the direction that the sprite is planning to move when it can move in
+     * that direction. This isn't necessarily the direction that the sprite is actually
+     * moving.
+     */
+    public int getDirection(){
+        return direction;
+    }
+
+    public int getSpeed(){
+        return speed;
+    }
+
+    /**
      * Returns the actual direction that the sprite is moving, NOT the
      * direction that it's queued to turn.
      */
