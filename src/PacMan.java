@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 import edu.macalester.graphics.*;
 
+//Credit for how Pacman works: https://www.gamasutra.com/view/feature/3938/the_pacman_dossier.php?print=1
+
 public class PacMan {
     private final Tile[][] board = new Tile[ROWS][COLS];
     // public static final int ROWS = 10;
@@ -23,6 +25,7 @@ public class PacMan {
     private int numPoints = 0;
     private int totalDots = 0;
     private int lives;
+    private boolean ateDot;
 
     /**
      * the main pacman game class
@@ -56,8 +59,13 @@ public class PacMan {
      * the main animation loop for the game
      */
     private void animate() {
-        player.updatePos();
-        checkEatenDot();
+        if(ateDot){
+            ateDot = false;
+        }
+        else{
+            player.updatePos();
+            checkEatenDot();
+        }
         for (Ghost ghost : ghosts) {
             ghost.updatePos();
         }
@@ -86,6 +94,7 @@ public class PacMan {
         canvas.removeAll();
         numPoints = 0;
         lives = 3;
+        ateDot = false;
         makeBoard();
         ghosts = new ArrayList<>();
         player = null;
@@ -97,7 +106,7 @@ public class PacMan {
         if (player != null) {
             canvas.remove(player);
         }
-        player = new Player(playerStartingPoint, 0, board);
+        player = new Player(playerStartingPoint, 0, 2, board);
         canvas.add(player);
         double x = playerStartingPoint.getX();
         double y = playerStartingPoint.getY();
@@ -198,7 +207,7 @@ public class PacMan {
         }
         ghosts = new ArrayList<>();
         for (Point point : ghostStartingPoints) {
-            Ghost ghost = new Ghost(point, 0, board);
+            Ghost ghost = new Ghost(point, 0, 2, board);
             ghosts.add(ghost);
             canvas.add(ghost);
             ghost.setCenter(point);
@@ -212,6 +221,7 @@ public class PacMan {
         Tile tile = player.getNearbyTile(0,0);
         if (tile.getHasDot()) {
             tile.removeDot();
+            ateDot = true;
             numPoints++;
         }
     }

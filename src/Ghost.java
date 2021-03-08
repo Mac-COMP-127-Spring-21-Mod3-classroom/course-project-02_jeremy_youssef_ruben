@@ -26,8 +26,8 @@ public class Ghost extends Sprite {
      * @param initialDirection 0-3, the direction the ghost should begin by traveling
      * @param board the board that the game is being played on
      */
-    public Ghost(Point center, int initialDirection, Tile[][] board) {
-        super(center, initialDirection, board);
+    public Ghost(Point center, int initialDirection, int speed, Tile[][] board) {
+        super(center, initialDirection, speed, board);
         this.board = board;
         generateAllNodesList();
         actualCurrentNode = startingNode;

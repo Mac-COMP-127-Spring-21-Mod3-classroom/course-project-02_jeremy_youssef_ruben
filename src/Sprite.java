@@ -5,12 +5,14 @@ public class Sprite extends GraphicsGroup{
     private int direction;
     //while realDirection is the direction the sprite is actually going
     private int realDirection;
+    private int speed;
     private Tile[][] board;
     
-    public Sprite(Point center, int initialDirection, Tile[][] board) {
+    public Sprite(Point center, int initialDirection, int speed, Tile[][] board) {
         this.board = board;
         setCenter(center);
         changeDirection(direction);
+        this.speed = speed;
     }
 
     /**
@@ -163,19 +165,19 @@ public class Sprite extends GraphicsGroup{
             }
         }
         if(realDirection == 0){
-            Point newPos = new Point(getCenter().getX(), getCenter().getY() - 1);
+            Point newPos = new Point(getCenter().getX(), getCenter().getY() - speed);
             setCenter(newPos);
         }
         else if(realDirection == 1){
-            Point newPos = new Point(getCenter().getX() + 1, getCenter().getY());
+            Point newPos = new Point(getCenter().getX() + speed, getCenter().getY());
             setCenter(newPos);
         }
         else if(realDirection == 2){
-            Point newPos = new Point(getCenter().getX(), getCenter().getY() + 1);
+            Point newPos = new Point(getCenter().getX(), getCenter().getY() + speed);
             setCenter(newPos);
         }
         else if(realDirection == 3){
-            Point newPos = new Point(getCenter().getX() - 1, getCenter().getY());
+            Point newPos = new Point(getCenter().getX() - speed, getCenter().getY());
             setCenter(newPos);
         }
         checkWrapAround();

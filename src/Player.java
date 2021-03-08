@@ -6,8 +6,8 @@ public class Player extends Sprite {
     /**
      * the player that the user controls (pacman themself)
      */
-    public Player(Point center, int initialDirection, Tile[][] board) {
-        super(center, initialDirection, board);
+    public Player(Point center, int initialDirection, int speed, Tile[][] board) {
+        super(center, initialDirection, speed, board);
         Image player = new Image (0, 0, "pacman.gif");
         player.setScale(0.45);
         add(player);
