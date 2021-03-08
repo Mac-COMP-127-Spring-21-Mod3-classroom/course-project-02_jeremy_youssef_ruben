@@ -8,13 +8,8 @@ import java.util.List;
 public class Ghost extends Sprite {
     private int count = 0;
     private Random rand = new Random();
-    private List<Image> ghostPNG = new ArrayList<>();
-    private final Image redGhost = new Image("red_ghost.png");
-    private final Image yellowGhost = new Image("yellow_ghost.png");
-    private final Image purpleGhost = new Image("purple_ghost.png");
-    private final Image greyGhost = new Image("grey_ghost.png");
-    private Node targetNode;
-    private Node startingNode;
+    private Node targetNode=null;
+    private Node startingNode=null;
     private Tile[][] board;
     private Node[] allNodes = new Node[PacMan.COLS * PacMan.ROWS];
     private List<Node> pathToTarget;
@@ -26,18 +21,10 @@ public class Ghost extends Sprite {
      * @param initialDirection 0-3, the direction the ghost should begin by traveling
      * @param board the board that the game is being played on
      */
-    public Ghost(Point center, int initialDirection, int speed, Tile[][] board) {
+    public Ghost(Point center, int initialDirection, int speed, Tile[][] board, Image ghost) {
         super(center, initialDirection, speed, board);
         this.board = board;
         generateAllNodesList();
-        actualCurrentNode = startingNode;
-        setNewTargetNode();
-        doAStar();
-        ghostPNG.add(redGhost);
-        ghostPNG.add(yellowGhost);
-        ghostPNG.add(purpleGhost);
-        ghostPNG.add(greyGhost);
-        Image ghost = ghostPNG.get(rand.nextInt(ghostPNG.size()));
         ghost.setScale(0.025);
         add(ghost);
     }
@@ -72,13 +59,19 @@ public class Ghost extends Sprite {
         // }
 
         updateActualCurrentNode();
-        if (pathToTarget.size() == 0) {
+        if (getNearbyTile(0, 0).getType()==1) {
+            super.updatePos();
+            return;
+        }
+        if (targetNode==null || pathToTarget.size() == 0) {
             // for visualizing a star:
             // for (Node node : allNodes) {
             //     board[node.getyBoardPos()][node.getxBoardPos()].setTileFillColor(Color.BLACK);
             // }
             setNewTargetNode();
             doAStar();
+            super.updatePos();
+            return;
         }
         Node nextNode = pathToTarget.get(0);
         if (actualCurrentNode == nextNode) {
@@ -139,7 +132,6 @@ public class Ghost extends Sprite {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
             startingNode = actualCurrentNode;
-            System.out.println(targetNode);
         } while (targetNode.isWall() || targetNode == updateActualCurrentNode());
         // for visualizing a star:
         // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
