@@ -21,22 +21,31 @@ public class Player extends Sprite {
     //if the player's a bit before, then 1) lock their direction and realDirection
     //until they hit the midpoint 2) move in both direction and realDirection
 
-    // @Override
-    // public void updatePos(){
-    //     double x = getCenter().getX();
-    //     double y = getCenter().getY();
-    //     if(locked > 0){
-    //         if(!hitsWall(getRealDirection())){
-    //             moveDiagonally();
-    //             locked--;
-    //         }
-    //     }
-    //     else{
-    //         if(getDirection() != getRealDirection() && !isTurningAround()){
-
-    //         }
-    //     }//end of else
-    // }
+    @Override
+    public void updatePos(){
+        double x = getCenter().getX();
+        double y = getCenter().getY();
+        if(super.isInCenter()){
+            //If it's in the center of a tile, it's not moving diagonally anyway
+            super.updatePos();
+        }
+        else{
+            if(locked > 0){
+                if(!hitsWall(getRealDirection())){
+                    moveDiagonally();
+                    locked--;
+                }
+            }
+            else{
+                if(getDirection() != getRealDirection() && !isTurningAround() && isInCenter(4)){
+                    moveDiagonally();
+                }
+                else{
+                    super.updatePos();
+                }
+            }//end of inner else
+        }//end of outer else
+    }
 
     public void moveDiagonally(){
         Point newPos = getCenter();
@@ -76,12 +85,23 @@ public class Player extends Sprite {
         setCenter(newPos);
     }
 
-    public boolean isInCenter(Point forwardPosition){
+    /**
+     * Returns true if the center of the tile is within the given value in terms
+     * of pixels. For example, if howFar is 6 and the center is in 3 pixels, it
+     * will return true.
+     * @param howFar The number of pixels forward to check.
+     */
+    public boolean isInCenter(int howFar){
         double tileX = getNearbyTile(0,0).getTileCenter().getX();
         double tileY = getNearbyTile(0,0).getTileCenter().getY();
+        Point forwardPosition = getForwardPosition(howFar);
         Point betterTileCenter = new Point(tileX, tileY);
         if(betterTileCenter.equals(forwardPosition)){
+            locked = howFar;
             return true;
+        }
+        if(howFar > 0){
+            return isInCenter(howFar - 1);
         }
         return false;
     }
