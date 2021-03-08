@@ -21,22 +21,22 @@ public class Player extends Sprite {
     //if the player's a bit before, then 1) lock their direction and realDirection
     //until they hit the midpoint 2) move in both direction and realDirection
 
-    @Override
-    public void updatePos(){
-        // double x = getCenter().getX();
-        // double y = getCenter().getY();
-        // if(locked > 0){
-        //     if(!hitsWall(getRealDirection())){
-        //         moveDiagonally();
-        //         locked--;
-        //     }
-        // }
-        // else{
-        //     if(getDirection() != getRealDirection() && !isTurningAround()){
+    // @Override
+    // public void updatePos(){
+    //     double x = getCenter().getX();
+    //     double y = getCenter().getY();
+    //     if(locked > 0){
+    //         if(!hitsWall(getRealDirection())){
+    //             moveDiagonally();
+    //             locked--;
+    //         }
+    //     }
+    //     else{
+    //         if(getDirection() != getRealDirection() && !isTurningAround()){
 
-        //     }
-        // }//end of else
-    }
+    //         }
+    //     }//end of else
+    // }
 
     public void moveDiagonally(){
         Point newPos = getCenter();
