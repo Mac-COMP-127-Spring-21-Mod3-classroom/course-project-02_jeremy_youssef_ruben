@@ -112,23 +112,23 @@ public class Sprite extends GraphicsGroup{
     public boolean hitsWall(int direction){
         // North (0), east (1), south (2), or west (3).
         if (direction == 0) {
-            if (getNearbyTile(0, -1).getType() == 0) {
-                return false;
+            if (getNearbyTile(0, -1).getType() == 1) {
+                return true;
             }
         } else if (direction == 1) {
-            if (getNearbyTile(1, 0).getType() == 0) {
-                return false;
+            if (getNearbyTile(1, 0).getType() == 1) {
+                return true;
             }
         } else if (direction == 2) {
-            if (getNearbyTile(0, 1).getType() == 0) {
-                return false;
+            if (getNearbyTile(0, 1).getType() == 1) {
+                return true;
             }
         } else if (direction == 3) {
-            if (getNearbyTile(-1, 0).getType() == 0) {
-                return false;
+            if (getNearbyTile(-1, 0).getType() == 1) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**

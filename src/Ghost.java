@@ -132,7 +132,7 @@ public class Ghost extends Sprite {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
             startingNode = actualCurrentNode;
-        } while (targetNode.isWall() || targetNode == updateActualCurrentNode());
+        } while (targetNode.isWall() || targetNode == updateActualCurrentNode() || board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].getType() == 4);
         // for visualizing a star:
         // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
     }

@@ -33,7 +33,6 @@ public class Tile extends GraphicsGroup{
                 break;
             case 4:
                 makeEmptyTile();
-                this.type = 1;
                 break;
         
             default:
