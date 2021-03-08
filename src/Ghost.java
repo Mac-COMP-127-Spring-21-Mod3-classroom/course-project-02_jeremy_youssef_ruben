@@ -145,7 +145,7 @@ public class Ghost extends Sprite {
             System.out.println(targetNode);
         } while (targetNode.isWall() || targetNode == updateActualCurrentNode());
         // for visualizing a star:
-        board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
+        // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
     }
 
     /**
