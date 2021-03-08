@@ -21,17 +21,22 @@ public class Player extends Sprite {
     //if the player's a bit before, then 1) lock their direction and realDirection
     //until they hit the midpoint 2) move in both direction and realDirection
 
-    // @Override
-    // public void updatePos(){
-    //     double x = getCenter().getX();
-    //     double y = getCenter().getY();
-    //     if(locked > 0){
-    //         if(!hitsWall(getRealDirection())){
-    //             moveDiagonally();
-    //             locked--;
-    //         }
-    //     }
-    // }
+    @Override
+    public void updatePos(){
+        // double x = getCenter().getX();
+        // double y = getCenter().getY();
+        // if(locked > 0){
+        //     if(!hitsWall(getRealDirection())){
+        //         moveDiagonally();
+        //         locked--;
+        //     }
+        // }
+        // else{
+        //     if(getDirection() != getRealDirection() && !isTurningAround()){
+
+        //     }
+        // }//end of else
+    }
 
     public void moveDiagonally(){
         Point newPos = getCenter();
@@ -46,17 +51,27 @@ public class Player extends Sprite {
         }
         else if(getRealDirection() == 1){
             if(getDirection() == 0){//Right and turning up
-                newPos = new Point(getCenter())
+                newPos = new Point(getCenter().getX() + getSpeed(), getCenter().getY() - getSpeed());
             }
             else if(getDirection() == 2){//Right and turning down
-
+                newPos = new Point(getCenter().getX() + getSpeed(), getCenter().getY() + getSpeed());
             }
         }
         else if(getRealDirection() == 2){
-            
+            if(getDirection() == 3){//Down and turning left
+                newPos = new Point(getCenter().getX() - getSpeed(), getCenter().getY() + getSpeed());
+            }
+            else if(getDirection() == 1){//Down and turning right
+                newPos = new Point(getCenter().getX() + getSpeed(), getCenter().getY() + getSpeed());
+            }
         }
         else if(getRealDirection() == 3){
-            
+            if(getDirection() == 0){//Left and turning up
+                newPos = new Point(getCenter().getX() - getSpeed(), getCenter().getY() - getSpeed());
+            }
+            else if(getDirection() == 2){//Left and turning down
+                newPos = new Point(getCenter().getX() - getSpeed(), getCenter().getY() + getSpeed());
+            }
         }
         setCenter(newPos);
     }

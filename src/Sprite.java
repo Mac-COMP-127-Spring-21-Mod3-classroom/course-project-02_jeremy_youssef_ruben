@@ -80,7 +80,7 @@ public class Sprite extends GraphicsGroup{
      * @return returns true if the sprite is planning to turn in the opposite direction from what it's facing. Returns false otherwise.
      * (Left to right, right to left, up to down, or down to up.)
      */
-    private boolean isTurningAround(){
+    public boolean isTurningAround(){
         if(realDirection == 0){
             if(direction == 2){
                 return true;
