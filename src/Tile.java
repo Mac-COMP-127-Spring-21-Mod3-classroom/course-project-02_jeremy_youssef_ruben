@@ -29,6 +29,7 @@ public class Tile extends GraphicsGroup{
                 break;
             case 2:
                 makeGhostArea();
+                this.type = 1;
                 break;
             case 4:
                 makeEmptyTile();

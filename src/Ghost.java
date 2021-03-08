@@ -13,8 +13,8 @@ public class Ghost extends Sprite {
     private final Image yellowGhost = new Image("yellow_ghost.png");
     private final Image purpleGhost = new Image("purple_ghost.png");
     private final Image greyGhost = new Image("grey_ghost.png");
-    private Node targetNode;
-    private Node startingNode;
+    private Node targetNode=null;
+    private Node startingNode=null;
     private Tile[][] board;
     private Node[] allNodes = new Node[PacMan.COLS * PacMan.ROWS];
     private List<Node> pathToTarget;
@@ -30,9 +30,6 @@ public class Ghost extends Sprite {
         super(center, initialDirection, speed, board);
         this.board = board;
         generateAllNodesList();
-        actualCurrentNode = startingNode;
-        setNewTargetNode();
-        doAStar();
         ghostPNG.add(redGhost);
         ghostPNG.add(yellowGhost);
         ghostPNG.add(purpleGhost);
@@ -72,13 +69,19 @@ public class Ghost extends Sprite {
         // }
 
         updateActualCurrentNode();
-        if (pathToTarget.size() == 0) {
+        if (getNearbyTile(0, 0).getType()==1) {
+            super.updatePos();
+            return;
+        }
+        if (targetNode==null || pathToTarget.size() == 0) {
             // for visualizing a star:
             // for (Node node : allNodes) {
             //     board[node.getyBoardPos()][node.getxBoardPos()].setTileFillColor(Color.BLACK);
             // }
             setNewTargetNode();
             doAStar();
+            super.updatePos();
+            return;
         }
         Node nextNode = pathToTarget.get(0);
         if (actualCurrentNode == nextNode) {
@@ -142,7 +145,7 @@ public class Ghost extends Sprite {
             System.out.println(targetNode);
         } while (targetNode.isWall() || targetNode == updateActualCurrentNode());
         // for visualizing a star:
-        // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
+        board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
     }
 
     /**
