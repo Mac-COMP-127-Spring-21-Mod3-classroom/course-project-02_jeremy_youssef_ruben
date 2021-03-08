@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import edu.macalester.graphics.*;
 
@@ -20,6 +22,12 @@ public class PacMan {
     private Point playerStartingPoint;
     private ArrayList<Point> ghostStartingPoints;
     private ArrayList<Ghost> ghosts;
+    private List<Image> ghostPNG;
+    private final Image redGhost = new Image("red_ghost.png");
+    private final Image yellowGhost = new Image("yellow_ghost.png");
+    private final Image purpleGhost = new Image("purple_ghost.png");
+    private final Image greyGhost = new Image("grey_ghost.png");
+    private Random rand = new Random();
     private Player player;
     private CanvasWindow canvas;
     private int numPoints = 0;
@@ -149,9 +157,9 @@ public class PacMan {
             {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {4, 4, 4, 4, 4, 4, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 4},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {4, 4, 4, 4, 4, 4, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 4, 4, 4, 4, 4, 4, 4},
@@ -206,11 +214,18 @@ public class PacMan {
             canvas.remove(ghost);
         }
         ghosts = new ArrayList<>();
+        ghostPNG = new ArrayList<>();
+        ghostPNG.add(redGhost);
+        ghostPNG.add(yellowGhost);
+        ghostPNG.add(purpleGhost);
+        ghostPNG.add(greyGhost);
         for (Point point : ghostStartingPoints) {
-            Ghost ghost = new Ghost(point, 0, 2, board);
+            Integer index = rand.nextInt(ghostPNG.size());
+            Ghost ghost = new Ghost(point, 0, 2, board, ghostPNG.get(index));
             ghosts.add(ghost);
             canvas.add(ghost);
             ghost.setCenter(point);
+            ghostPNG.remove(ghostPNG.get(index));
         }
     }
 

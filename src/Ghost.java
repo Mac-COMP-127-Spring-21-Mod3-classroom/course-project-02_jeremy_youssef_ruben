@@ -8,11 +8,6 @@ import java.util.List;
 public class Ghost extends Sprite {
     private int count = 0;
     private Random rand = new Random();
-    private List<Image> ghostPNG = new ArrayList<>();
-    private final Image redGhost = new Image("red_ghost.png");
-    private final Image yellowGhost = new Image("yellow_ghost.png");
-    private final Image purpleGhost = new Image("purple_ghost.png");
-    private final Image greyGhost = new Image("grey_ghost.png");
     private Node targetNode=null;
     private Node startingNode=null;
     private Tile[][] board;
@@ -26,15 +21,10 @@ public class Ghost extends Sprite {
      * @param initialDirection 0-3, the direction the ghost should begin by traveling
      * @param board the board that the game is being played on
      */
-    public Ghost(Point center, int initialDirection, int speed, Tile[][] board) {
+    public Ghost(Point center, int initialDirection, int speed, Tile[][] board, Image ghost) {
         super(center, initialDirection, speed, board);
         this.board = board;
         generateAllNodesList();
-        ghostPNG.add(redGhost);
-        ghostPNG.add(yellowGhost);
-        ghostPNG.add(purpleGhost);
-        ghostPNG.add(greyGhost);
-        Image ghost = ghostPNG.get(rand.nextInt(ghostPNG.size()));
         ghost.setScale(0.025);
         add(ghost);
     }
