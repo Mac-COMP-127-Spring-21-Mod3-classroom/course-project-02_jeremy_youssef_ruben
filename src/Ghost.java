@@ -126,7 +126,7 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * @return true of the ghost is stuck, false if not
+     * @return true if the ghost is stuck, false if not
      */
     private boolean isStuck() {
         if (previousPosition.equals(getCenter())) {
@@ -143,7 +143,7 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * @param currentPlayerTile to upddate which tile the player is currently on
+     * @param currentPlayerTile to update which tile the player is currently on
      */
     public void setCurrentPlayerNode(Tile currentPlayerTile) {
         currentPlayerNode = allNodes[getTileXY(currentPlayerTile)[1]*(PacMan.COLS) + getTileXY(currentPlayerTile)[0]];
@@ -269,7 +269,7 @@ public class Ghost extends Sprite {
 
             closedList.add(currentNode);
 
-            // if we have reached the target
+            // if we have found a path to the target
             if (currentNode == targetNode) {
                 retracePath(startingNode, targetNode);
                 return;
