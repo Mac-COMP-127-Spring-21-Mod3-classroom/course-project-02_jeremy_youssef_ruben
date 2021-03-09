@@ -41,16 +41,19 @@ public class Ghost extends Sprite {
         count ++;
         updateActualCurrentNode();
 
+        // if it is still in the ghost starting area
         if (getNearbyTile(0, 0).getType()==1) {
             super.updatePos();
             return;
         }
 
+        // redo a* in case the position changed without following the node path (turning around)
         if (targetNode != null) {
             startingNode = actualCurrentNode;
             doAStar();
         }
 
+        // get a new target node if there isnt one (starting), if it reached its previous node, or if enough time has passed
         if (targetNode==null || pathToTarget.size() == 0 || count > 3000) {
             // for visualizing a star:
             // for (Node node : allNodes) {
@@ -60,10 +63,10 @@ public class Ghost extends Sprite {
             doAStar();
             super.updatePos();
             count = 0;
-            System.out.println("hi");
             return;
         }
 
+        // figure out what the next node in the path to the target is and remove it from the path
         Node nextNode = pathToTarget.get(0);
         if (actualCurrentNode == nextNode) {
             pathToTarget.remove(nextNode);
@@ -72,6 +75,8 @@ public class Ghost extends Sprite {
             // for visualizing a star:
             // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
         }
+
+        // go in the direction of the next node
         // North (0), east (1), south (2), or west (3).
         if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() < 0) {
             if (getRealDirection() != 1) {
@@ -119,6 +124,9 @@ public class Ghost extends Sprite {
         }
     }
 
+    /**
+     * @return true of the ghost is stuck, false if not
+     */
     private boolean isStuck() {
         if (previousPosition.equals(getCenter())) {
             return true;
@@ -126,10 +134,16 @@ public class Ghost extends Sprite {
         return false;
     }
 
+    /**
+     * @param targetPlayerDistance the radius around the player to set the target within
+     */
     public void setTargetPlayerDistance(double targetPlayerDistance) {
         this.targetPlayerDistance = targetPlayerDistance;
     }
 
+    /**
+     * @param currentPlayerTile to upddate which tile the player is currently on
+     */
     public void setCurrentPlayerNode(Tile currentPlayerTile) {
         currentPlayerNode = allNodes[getTileXY(currentPlayerTile)[1]*(PacMan.COLS) + getTileXY(currentPlayerTile)[0]];
     }
@@ -195,6 +209,7 @@ public class Ghost extends Sprite {
     /**
      * this is the hueristic function that a* uses to determine what path to take
      * it takes two nodes and returns the absolute distance between them
+     * TODO: right now this doesn't know about wrapping either
      */
     private int getDistance(Node currentNode, Node neighbour) {
         return ((Math.abs(neighbour.getxBoardPos() - currentNode.getxBoardPos())) + (Math.abs(neighbour.getyBoardPos() - currentNode.getyBoardPos())));
@@ -223,12 +238,16 @@ public class Ghost extends Sprite {
      * this function's purpose is to update the instance variable pathToTargetNode
      */
     private void doAStar() {
+        // list of nodes to check
         List<Node> openList = new ArrayList<>();
         openList.add(startingNode);
+        // list of nodes already checked
         List<Node> closedList = new ArrayList<>();
 
+        // check the nodes in the open list (this while loop adds to the open list, so when it is done, the path should have been found)
         while (openList.size() > 0) {
             Node currentNode = openList.get(0);
+            // check nodes in open list, if we have found a better than where we currently are, set that to the current node
             for (int i = 0; i < openList.size(); i++) {
                 if (openList.get(i).getfCost() < currentNode.getfCost() ||
                     (openList.get(i).getfCost() == currentNode.getfCost() && openList.get(i).gethCost() < currentNode.gethCost())) {
@@ -240,21 +259,25 @@ public class Ghost extends Sprite {
 
             closedList.add(currentNode);
 
+            // if we have reached the target
             if (currentNode == targetNode) {
                 retracePath(startingNode, targetNode);
                 return;
             }
 
+            // update the cost and parent of each neighbour node and add them to the open list
             for (Node neighbour : getNeighbours(currentNode)) {
                 if (neighbour.isWall() || closedList.contains(neighbour)) {
                     continue;
                 }
                 int newMovementCostToNeighbour = currentNode.getgCost() + getDistance(currentNode, neighbour);
+                // if the new cost to reach this node is less than the old cost, update its parent and cost
                 if (newMovementCostToNeighbour < neighbour.getgCost() || !openList.contains(neighbour)) {
                     neighbour.setgCost(newMovementCostToNeighbour);
                     neighbour.sethCost(getDistance(neighbour, targetNode));
                     neighbour.setParent(currentNode);
 
+                    // add this node to the open list
                     if (!openList.contains(neighbour)) {
                         openList.add(neighbour);
                     }

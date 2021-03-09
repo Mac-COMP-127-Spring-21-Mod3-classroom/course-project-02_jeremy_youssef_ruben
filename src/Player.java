@@ -18,9 +18,11 @@ public class Player extends Sprite {
         // add(new Rectangle(0, 0, 10, 10));
     }
 
-    //if the player's a bit before, then 1) lock their direction and realDirection
-    //until they hit the midpoint 2) move in both direction and realDirection
-
+    /**
+     * this override implements corner cutting for the player by doing the following:
+     * if the player's a bit before (the center of the tile), then 1) lock their direction and realDirection
+     * until they hit the midpoint 2) move in both direction and realDirection
+     */
     @Override
     public void updatePos(){
         double x = getCenter().getX();
@@ -47,7 +49,7 @@ public class Player extends Sprite {
         }//end of outer else
     }
 
-    public void moveDiagonally(){
+    private void moveDiagonally(){
         Point newPos = getCenter();
         if(getRealDirection() == 0){
             if(getDirection() == 3){//Up and turning left
@@ -91,7 +93,7 @@ public class Player extends Sprite {
      * will return true.
      * @param howFar The number of pixels forward to check.
      */
-    public boolean isInCenter(int howFar){
+    private boolean isInCenter(int howFar){
         double tileX = getNearbyTile(0,0).getTileCenter().getX();
         double tileY = getNearbyTile(0,0).getTileCenter().getY();
         Point forwardPosition = getForwardPosition(howFar);
@@ -106,7 +108,7 @@ public class Player extends Sprite {
         return false;
     }
 
-    public Point getForwardPosition(int howFar){
+    private Point getForwardPosition(int howFar){
         double x = getCenter().getX();
         double y = getCenter().getY();
         if(getDirection()==0){

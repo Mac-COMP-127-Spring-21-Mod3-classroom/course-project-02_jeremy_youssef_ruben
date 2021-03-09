@@ -8,6 +8,9 @@ public class Sprite extends GraphicsGroup{
     private int speed;
     private Tile[][] board;
     
+    /**
+     * this is the super class of which ghost and player are both made from
+     */
     public Sprite(Point center, int initialDirection, int speed, Tile[][] board) {
         this.board = board;
         setCenter(center);
@@ -37,6 +40,9 @@ public class Sprite extends GraphicsGroup{
         return board[wrapTileChecker(yOffset + getTileXY(this)[1], false)][wrapTileChecker(xOffset + getTileXY(this)[0], true)];
     }
 
+    /**
+     * gets the x and y position in the 2d array of tiles that makes up board
+     */
     public int[] getTileXY(GraphicsObject object) {
         int xPosition = (int) (PacMan.COLS*(object.getCenter().getX() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
         int yPosition = (int) (PacMan.ROWS*(object.getCenter().getY() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
