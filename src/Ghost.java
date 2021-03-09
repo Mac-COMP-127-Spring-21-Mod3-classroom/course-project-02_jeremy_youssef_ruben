@@ -80,33 +80,30 @@ public class Ghost extends Sprite {
         // go in the direction of the next node
         // North (0), east (1), south (2), or west (3).
         if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() < 0) {
-            if (getRealDirection() != 1) {
-                changeDirection(3);
-            } else if (isStuck()) {
-                dontTurnAround(3);
-            }
+            handleMovment(1, 3);
         } else if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() > 0) {
-            if (getRealDirection() != 3) {
-                changeDirection(1);
-            } else if (isStuck()) {
-                dontTurnAround(1);
-            }
+            handleMovment(3, 1);
         } else if (nextNode.getyBoardPos() - actualCurrentNode.getyBoardPos() < 0) {
-            if (getRealDirection() != 2) {
-                changeDirection(0);
-            } else if (isStuck()) {
-                dontTurnAround(0);
-            }
+            handleMovment(2, 0);
         } else if (nextNode.getyBoardPos() - actualCurrentNode.getyBoardPos() > 0) {
-            if (getRealDirection() != 0) {
-                changeDirection(2);
-            } else if (isStuck()) {
-                dontTurnAround(2);
-            }
+            handleMovment(0, 2);
         }
 
         previousPosition = getCenter();
         super.updatePos();
+    }
+
+    /**
+     * helper function to handle trying to move in a direction without moving in the given second direction
+     * @param n the direction you want to move
+     * @param l the direction not to move
+     */
+    private void handleMovment(int n, int l) {
+        if (getRealDirection() != n) {
+            changeDirection(l);
+        } else if (isStuck()) {
+            dontTurnAround(l);
+        }
     }
 
     /**
