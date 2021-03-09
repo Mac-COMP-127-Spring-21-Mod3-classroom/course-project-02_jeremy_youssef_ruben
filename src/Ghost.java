@@ -15,6 +15,7 @@ public class Ghost extends Sprite {
     private Node actualCurrentNode;
     private double targetPlayerDistance;
     private Node currentPlayerNode;
+    private Point previousPosition = null;
 
     /**
      * a ghost in the game of pacman
@@ -44,6 +45,11 @@ public class Ghost extends Sprite {
             return;
         }
 
+        if (targetNode != null) {
+            startingNode = actualCurrentNode;
+            doAStar();
+        }
+
         if (targetNode==null || pathToTarget.size() == 0) {
             // for visualizing a star:
             // for (Node node : allNodes) {
@@ -63,18 +69,58 @@ public class Ghost extends Sprite {
             // for visualizing a star:
             // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
         }
-        // * North (0), east (1), south (2), or west (3).
+        // North (0), east (1), south (2), or west (3).
         if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() < 0) {
-            changeDirection(3);
+            if (getRealDirection() != 1) {
+                changeDirection(3);
+            } else if (isStuck()) {
+                dontTurnAround(3);
+            }
         } else if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() > 0) {
-            changeDirection(1);
+            if (getRealDirection() != 3) {
+                changeDirection(1);
+            } else if (isStuck()) {
+                dontTurnAround(1);
+            }
         } else if (nextNode.getyBoardPos() - actualCurrentNode.getyBoardPos() < 0) {
-            changeDirection(0);
+            if (getRealDirection() != 2) {
+                changeDirection(0);
+            } else if (isStuck()) {
+                dontTurnAround(0);
+            }
         } else if (nextNode.getyBoardPos() - actualCurrentNode.getyBoardPos() > 0) {
-            changeDirection(2);
+            if (getRealDirection() != 0) {
+                changeDirection(2);
+            } else if (isStuck()) {
+                dontTurnAround(2);
+            }
         }
 
+        previousPosition = getCenter();
         super.updatePos();
+    }
+
+    /**
+     * this function is called if the ghost is stuck (if it wants to turn around and is hitting a wall)
+     * it turns in some direction that is not the direction it came from (the parameter given)
+     * and in a direction that does not hit a wall
+     */
+    private void dontTurnAround(int directionNotToGo) {
+        for (int i = 0; i < 4; i++) {
+            if (i != directionNotToGo) {
+                if (!hitsWall(i)) {
+                    changeDirection(i);
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean isStuck() {
+        if (previousPosition.equals(getCenter())) {
+            return true;
+        }
+        return false;
     }
 
     public void setTargetPlayerDistance(double targetPlayerDistance) {
