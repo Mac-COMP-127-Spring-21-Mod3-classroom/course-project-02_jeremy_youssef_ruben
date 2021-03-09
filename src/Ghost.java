@@ -72,9 +72,10 @@ public class Ghost extends Sprite {
             pathToTarget.remove(nextNode);
             if (pathToTarget.size() == 0) return;
             nextNode = pathToTarget.get(0);
-            // for visualizing a star:
-            // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
         }
+
+        // for visualizing a star:
+        // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
 
         // go in the direction of the next node
         // North (0), east (1), south (2), or west (3).
@@ -191,14 +192,13 @@ public class Ghost extends Sprite {
 
     /**
      * gets the Neighbouring nodes of the given node
-     * TODO: right now it doesnt know about wrapping
      */
     private List<Node> getNeighbours(Node currentNode) {
         List<Node> neighbours = new ArrayList<>();
         for (Node node : allNodes) {
             if (node.getxBoardPos() == currentNode.getxBoardPos() 
             || node.getyBoardPos() == currentNode.getyBoardPos()) {
-                if (Math.abs(node.getxBoardPos() - currentNode.getxBoardPos()) == 1 || Math.abs(node.getyBoardPos() - currentNode.getyBoardPos()) == 1) {
+                if (getDifference(node.getxBoardPos(), currentNode.getxBoardPos(), true) == 1 || getDifference(node.getyBoardPos(), currentNode.getyBoardPos(), false) == 1) {
                     neighbours.add(node);
                 }
             }
@@ -207,12 +207,22 @@ public class Ghost extends Sprite {
     }
 
     /**
+     * gets the absolute difference between the two numbers given
+     * the given numbers should be positions on the board
+     * this function accounts for wrapping around the board
+     */
+    private double getDifference(double n, double l, boolean isX) {
+        int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
+        if ((n==0 || l==0) && (n==toCheck-1 || l==toCheck-1)) return 1;
+        return Math.abs(n-l);
+    }
+
+    /**
      * this is the hueristic function that a* uses to determine what path to take
      * it takes two nodes and returns the absolute distance between them
-     * TODO: right now this doesn't know about wrapping either
      */
-    private int getDistance(Node currentNode, Node neighbour) {
-        return ((Math.abs(neighbour.getxBoardPos() - currentNode.getxBoardPos())) + (Math.abs(neighbour.getyBoardPos() - currentNode.getyBoardPos())));
+    private double getDistance(Node currentNode, Node neighbour) {
+        return ((getDifference(neighbour.getxBoardPos(), currentNode.getxBoardPos(), true)) + (getDifference(neighbour.getyBoardPos(), currentNode.getyBoardPos(), false)));
     }
 
     /**
@@ -270,7 +280,7 @@ public class Ghost extends Sprite {
                 if (neighbour.isWall() || closedList.contains(neighbour)) {
                     continue;
                 }
-                int newMovementCostToNeighbour = currentNode.getgCost() + getDistance(currentNode, neighbour);
+                double newMovementCostToNeighbour = currentNode.getgCost() + getDistance(currentNode, neighbour);
                 // if the new cost to reach this node is less than the old cost, update its parent and cost
                 if (newMovementCostToNeighbour < neighbour.getgCost() || !openList.contains(neighbour)) {
                     neighbour.setgCost(newMovementCostToNeighbour);

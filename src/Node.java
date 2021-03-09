@@ -4,8 +4,8 @@ public class Node {
     private int yBoardPos;
     private Node parent;
 
-    private int gCost;
-    private int hCost;
+    private double gCost;
+    private double hCost;
 
     /**
      * this is a node object to be used in the ghost's pathfinding
@@ -22,11 +22,11 @@ public class Node {
         return "This node is at: " + xBoardPos + " , " + yBoardPos + " this is a wall: " + isWall;
     }
 
-    public void setgCost(int gCost) {
+    public void setgCost(double gCost) {
         this.gCost = gCost;
     }
 
-    public void sethCost(int hCost) {
+    public void sethCost(double hCost) {
         this.hCost = hCost;
     }
 
@@ -34,7 +34,7 @@ public class Node {
         this.parent = parent;
     }
 
-    public int getfCost() {
+    public double getfCost() {
         return gCost + hCost;
     }
 
@@ -50,11 +50,11 @@ public class Node {
         return yBoardPos;
     }
 
-    public int gethCost() {
+    public double gethCost() {
         return hCost;
     }
 
-    public int getgCost() {
+    public double getgCost() {
         return gCost;
     }
 
