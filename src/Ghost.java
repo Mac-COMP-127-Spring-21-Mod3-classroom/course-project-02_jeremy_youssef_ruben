@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Ghost extends Sprite {
-    private int count = 0;
     private Random rand = new Random();
     private Node targetNode=null;
     private Node startingNode=null;
@@ -14,6 +13,8 @@ public class Ghost extends Sprite {
     private Node[] allNodes = new Node[PacMan.COLS * PacMan.ROWS];
     private List<Node> pathToTarget;
     private Node actualCurrentNode;
+    private double targetPlayerDistance;
+    private Node currentPlayerNode;
 
     /**
      * a ghost in the game of pacman
@@ -35,34 +36,14 @@ public class Ghost extends Sprite {
      */
     @Override
     public void updatePos() {
-        // if (count > 100) {
-        //     int random;
-        //     while (true) {
-        //         random = rand.nextInt(4);
-        //         if (random == super.getRealDirection()) continue;
-        //         else if (random == 0 && super.getRealDirection() == 2) continue;
-        //         else if (random == 2 && super.getRealDirection() == 0) continue;
-        //         else if (random == 1 && super.getRealDirection() == 3) continue;
-        //         else if (random == 3 && super.getRealDirection() == 1) continue;
-        //         break;
-        //     }
-        //     super.changeDirection(random);
-        //     // if (random == 3) super.setRotation(); need to figure out a way to flip images along an axis
-        //     // if (random == 1) super.setRotation();
-        //     count = 0;
-        // }
-
-        // if (count > 1000) {
-        //     setNewTargetNode();
-        //     doAStar();
-        //     count = 0;
-        // }
 
         updateActualCurrentNode();
+
         if (getNearbyTile(0, 0).getType()==1) {
             super.updatePos();
             return;
         }
+
         if (targetNode==null || pathToTarget.size() == 0) {
             // for visualizing a star:
             // for (Node node : allNodes) {
@@ -73,6 +54,7 @@ public class Ghost extends Sprite {
             super.updatePos();
             return;
         }
+
         Node nextNode = pathToTarget.get(0);
         if (actualCurrentNode == nextNode) {
             pathToTarget.remove(nextNode);
@@ -81,6 +63,7 @@ public class Ghost extends Sprite {
             // for visualizing a star:
             // board[nextNode.getyBoardPos()][nextNode.getxBoardPos()].setTileFillColor(Color.BLUE);
         }
+        // * North (0), east (1), south (2), or west (3).
         if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() < 0) {
             changeDirection(3);
         } else if (nextNode.getxBoardPos() - actualCurrentNode.getxBoardPos() > 0) {
@@ -92,7 +75,14 @@ public class Ghost extends Sprite {
         }
 
         super.updatePos();
-        count++;
+    }
+
+    public void setTargetPlayerDistance(double targetPlayerDistance) {
+        this.targetPlayerDistance = targetPlayerDistance;
+    }
+
+    public void setCurrentPlayerNode(Tile currentPlayerTile) {
+        currentPlayerNode = allNodes[getTileXY(currentPlayerTile)[1]*(PacMan.COLS) + getTileXY(currentPlayerTile)[0]];
     }
 
     /**
@@ -126,13 +116,12 @@ public class Ghost extends Sprite {
 
     /**
      * sets a new target node
-     * TODO: this needs to be updated to be closer and closer to the player
      */
     private void setNewTargetNode() {
         do {
             targetNode = allNodes[rand.nextInt(PacMan.COLS * PacMan.ROWS)];
             startingNode = actualCurrentNode;
-        } while (targetNode.isWall() || targetNode == updateActualCurrentNode() || board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].getType() == 4);
+        } while (board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].getType() == 1 || targetNode == updateActualCurrentNode() || board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].getType() == 4 || getDistance(targetNode, currentPlayerNode) > targetPlayerDistance);
         // for visualizing a star:
         // board[targetNode.getyBoardPos()][targetNode.getxBoardPos()].setTileFillColor(Color.RED);
     }

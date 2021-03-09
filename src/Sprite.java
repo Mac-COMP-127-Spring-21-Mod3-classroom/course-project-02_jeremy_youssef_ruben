@@ -34,12 +34,12 @@ public class Sprite extends GraphicsGroup{
      * @param yOffset The number of tiles above (negative) or below (positive).
      */
     public Tile getNearbyTile(int xOffset, int yOffset){
-        return board[wrapTileChecker(yOffset + getTileXY()[1], false)][wrapTileChecker(xOffset + getTileXY()[0], true)];
+        return board[wrapTileChecker(yOffset + getTileXY(this)[1], false)][wrapTileChecker(xOffset + getTileXY(this)[0], true)];
     }
 
-    private int[] getTileXY() {
-        int xPosition = (int) (PacMan.COLS*(getCenter().getX() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
-        int yPosition = (int) (PacMan.ROWS*(getCenter().getY() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
+    public int[] getTileXY(GraphicsObject object) {
+        int xPosition = (int) (PacMan.COLS*(object.getCenter().getX() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
+        int yPosition = (int) (PacMan.ROWS*(object.getCenter().getY() / (PacMan.ROWS * PacMan.TILE_SIDE_LENGTH)));
         return new int[] {xPosition,yPosition};
     }
 

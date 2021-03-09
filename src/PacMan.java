@@ -75,6 +75,8 @@ public class PacMan {
             checkEatenDot();
         }
         for (Ghost ghost : ghosts) {
+            ghost.setCurrentPlayerNode(player.getNearbyTile(0, 0));
+            ghost.setTargetPlayerDistance(COLS-((((totalDots*COLS)/totalDots)*numPoints + 1)/totalDots));
             ghost.updatePos();
         }
         checkLost();
