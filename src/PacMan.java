@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.awt.Color;
 
 import edu.macalester.graphics.*;
 
@@ -18,6 +19,7 @@ public class PacMan {
     // public static final int CANVAS_HEIGHT = 400;
     public static final int CANVAS_WIDTH = 720;
     public static final int CANVAS_HEIGHT = 620;
+    public static final int CANVAS_Y_OFFSET = 50;
     public static final int DOT_SIZE = 3;
     private Point playerStartingPoint;
     private ArrayList<Point> ghostStartingPoints;
@@ -34,12 +36,14 @@ public class PacMan {
     private int totalDots = 0;
     private int lives;
     private boolean ateDot;
+    private GraphicsText livesText;
+    private GraphicsText pointsText;
 
     /**
      * the main pacman game class
      */
     public PacMan() {
-        canvas = new CanvasWindow("PacMan!", CANVAS_WIDTH, CANVAS_HEIGHT);
+        canvas = new CanvasWindow("PacMan!", CANVAS_WIDTH, CANVAS_HEIGHT + CANVAS_Y_OFFSET);
         resetGame();
         canvas.onKeyDown(event -> {
             switch (event.getKey().toString()) {
@@ -81,6 +85,28 @@ public class PacMan {
         }
         checkLost();
         checkWon();
+        updateText();
+    }
+
+    private void updateText() {
+        pointsText.setText("Points: " + numPoints*100);
+        livesText.setText("Lives: " + lives);
+        pointsText.setCenter(pointsText.getWidth(), CANVAS_HEIGHT + CANVAS_Y_OFFSET/2);
+        livesText.setCenter(CANVAS_WIDTH - livesText.getWidth(), CANVAS_HEIGHT + CANVAS_Y_OFFSET/2);
+    }
+
+    private void resetTextDisplays() {
+        pointsText = new GraphicsText();
+        livesText = new GraphicsText();
+        pointsText.setFontSize(30);
+        livesText.setFontSize(30);
+        pointsText.setFillColor(Color.BLUE);
+        livesText.setFillColor(Color.BLUE);
+        Rectangle filler = new Rectangle(0,CANVAS_HEIGHT,CANVAS_WIDTH,CANVAS_Y_OFFSET);
+        filler.setFillColor(Color.BLACK);
+        canvas.add(filler);
+        canvas.add(livesText);
+        canvas.add(pointsText);
     }
 
     private void checkLost() {
@@ -110,6 +136,7 @@ public class PacMan {
         player = null;
         resetGhosts();
         resetPlayer();
+        resetTextDisplays();
     }
 
     private void resetPlayer() {
