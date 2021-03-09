@@ -16,6 +16,7 @@ public class Ghost extends Sprite {
     private double targetPlayerDistance;
     private Node currentPlayerNode;
     private Point previousPosition = null;
+    private int count = 0;
 
     /**
      * a ghost in the game of pacman
@@ -37,7 +38,7 @@ public class Ghost extends Sprite {
      */
     @Override
     public void updatePos() {
-
+        count ++;
         updateActualCurrentNode();
 
         if (getNearbyTile(0, 0).getType()==1) {
@@ -50,7 +51,7 @@ public class Ghost extends Sprite {
             doAStar();
         }
 
-        if (targetNode==null || pathToTarget.size() == 0) {
+        if (targetNode==null || pathToTarget.size() == 0 || count > 3000) {
             // for visualizing a star:
             // for (Node node : allNodes) {
             //     board[node.getyBoardPos()][node.getxBoardPos()].setTileFillColor(Color.BLACK);
@@ -58,6 +59,8 @@ public class Ghost extends Sprite {
             setNewTargetNode();
             doAStar();
             super.updatePos();
+            count = 0;
+            System.out.println("hi");
             return;
         }
 
