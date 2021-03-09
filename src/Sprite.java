@@ -87,25 +87,9 @@ public class Sprite extends GraphicsGroup{
      * (Left to right, right to left, up to down, or down to up.)
      */
     public boolean isTurningAround(){
-        if(realDirection == 0){
-            if(direction == 2){
-                return true;
-            }
-        }
-        else if(realDirection == 1){
-            if(direction == 3){
-                return true;
-            }
-        }
-        else if(realDirection == 2){
-            if(direction == 0){
-                return true;
-            }
-        }
-        else if(realDirection == 3){
-            if(direction == 1){
-                return true;
-            }
+        int[] directions = {2,3,0,1};
+        if (direction == directions[realDirection]) {
+            return true;
         }
         return false;
     }
@@ -117,22 +101,15 @@ public class Sprite extends GraphicsGroup{
      */
     public boolean hitsWall(int direction){
         // North (0), east (1), south (2), or west (3).
-        if (direction == 0) {
-            if (getNearbyTile(0, -1).getType() == 1) {
-                return true;
-            }
-        } else if (direction == 1) {
-            if (getNearbyTile(1, 0).getType() == 1) {
-                return true;
-            }
-        } else if (direction == 2) {
-            if (getNearbyTile(0, 1).getType() == 1) {
-                return true;
-            }
-        } else if (direction == 3) {
-            if (getNearbyTile(-1, 0).getType() == 1) {
-                return true;
-            }
+        int[][] nearbyByDirections = {
+            {0, -1},
+            {1, 0},
+            {0, 1},
+            {-1, 0}
+        };
+        int[] nearby = nearbyByDirections[direction];
+        if (getNearbyTile(nearby[0], nearby[1]).getType() == 1) {
+            return true;
         }
         return false;
     }
@@ -142,18 +119,8 @@ public class Sprite extends GraphicsGroup{
      * that it's moving. Note that this is a graphical change only.
      */
     public void turnSprite(){
-        if(realDirection == 0){
-            setRotation(-90);
-        }
-        else if(realDirection == 1){
-            setRotation(0);
-        }
-        else if(realDirection == 2){
-            setRotation(90);
-        }
-        else if(realDirection == 3){
-            setRotation(-180);
-        }
+        int[] rotations = {-90, 0, 90, -180};
+        setRotation(rotations[realDirection]);
     }
 
     /**
@@ -170,22 +137,13 @@ public class Sprite extends GraphicsGroup{
                 return;
             }
         }
-        if(realDirection == 0){
-            Point newPos = new Point(getCenter().getX(), getCenter().getY() - speed);
-            setCenter(newPos);
-        }
-        else if(realDirection == 1){
-            Point newPos = new Point(getCenter().getX() + speed, getCenter().getY());
-            setCenter(newPos);
-        }
-        else if(realDirection == 2){
-            Point newPos = new Point(getCenter().getX(), getCenter().getY() + speed);
-            setCenter(newPos);
-        }
-        else if(realDirection == 3){
-            Point newPos = new Point(getCenter().getX() - speed, getCenter().getY());
-            setCenter(newPos);
-        }
+        Point[] points = {
+            new Point(getCenter().getX(), getCenter().getY() - speed),
+            new Point(getCenter().getX() + speed, getCenter().getY()),
+            new Point(getCenter().getX(), getCenter().getY() + speed),
+            new Point(getCenter().getX() - speed, getCenter().getY())
+        };
+        setCenter(points[realDirection]);
         checkWrapAround();
     }
 
