@@ -1,5 +1,3 @@
-// import edu.macalester.graphics.Rectangle;
-
 import edu.macalester.graphics.*;
 
 public class Player extends Sprite {
