@@ -124,6 +124,12 @@ public class Sprite extends GraphicsGroup{
             setRotation(rotationsPlayer[realDirection]);
         }
         if (this instanceof Ghost){
+            if (realDirection == 3){
+                this.setScale(-1, 1);
+            }
+            else {
+                this.setScale(1);
+            }
         }
     }
 
