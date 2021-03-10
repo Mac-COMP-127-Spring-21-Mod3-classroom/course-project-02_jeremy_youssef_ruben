@@ -1,15 +1,15 @@
 import edu.macalester.graphics.*;
 
 public class Sprite extends GraphicsGroup{
-    //direction is the direction that the sprite is planned to move,
     private int direction;
-    //while realDirection is the direction the sprite is actually going
+    //direction is the direction that the sprite is planned to move,
     private int realDirection;
+    //while realDirection is the direction the sprite is actually going
     private int speed;
     private Tile[][] board;
     
     /**
-     * this is the super class of which ghost and player are both made from
+     * This is the super class of which ghost and player are both made from
      */
     public Sprite(Point center, int initialDirection, int speed, Tile[][] board) {
         this.board = board;
@@ -21,7 +21,7 @@ public class Sprite extends GraphicsGroup{
     /**
      * Sets the sprite to move one of 4 directions:
      * North (0), east (1), south (2), or west (3).
-     * @param board The 2d array that represents the level layout.
+     * @param direction The direction that the sprite will turn at its next opportunity.
      */
     public void changeDirection(int direction) {
         if(direction < 0 || direction > 4){
@@ -41,7 +41,7 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
-     * gets the x and y position in the 2d array of tiles that makes up board
+     * Gets the x and y position in the 2d array of tiles that makes up board.
      */
     public int[] getTileXY(GraphicsObject object) {
         int xPosition = (int) (PacMan.COLS*(object.getCenter().getX() / (PacMan.COLS * PacMan.TILE_SIDE_LENGTH)));
@@ -50,9 +50,10 @@ public class Sprite extends GraphicsGroup{
     }
 
     /**
+     * Tells whether the player is on the edge of the board and needs to wrap around it.
      * @return what tile position to look at (adjusted so that -1 turns into the max, and anything over the max turns into 0)
      * @param position what position we want to look at
-     * @param isX are we looking at the rows? if fasle, then look at columns
+     * @param isX are we looking at the rows? if false, then look at columns
      */
     private int wrapTileChecker(int position, boolean isX) {
         int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
@@ -71,9 +72,6 @@ public class Sprite extends GraphicsGroup{
     public boolean isInCenter(){
         double tileX = getNearbyTile(0,0).getTileCenter().getX();
         double tileY = getNearbyTile(0,0).getTileCenter().getY();
-        // System.out.println("TILE: " + new Point(tileX, tileY));
-        // System.out.println("TILE (center): " + getNearbyTile(0,0).getCenter());
-        // System.out.println("PLAYER: " + getCenter());
         Point betterTileCenter = new Point(tileX, tileY);
         if(betterTileCenter.equals(getCenter())){
             return true;
@@ -187,6 +185,9 @@ public class Sprite extends GraphicsGroup{
         return direction;
     }
 
+    /**
+     * Returns the speed that the sprite is moving in pixels per second.
+     */
     public int getSpeed(){
         return speed;
     }

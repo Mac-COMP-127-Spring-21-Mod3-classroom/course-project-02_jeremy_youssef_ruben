@@ -1,5 +1,4 @@
 import edu.macalester.graphics.*;
-import java.awt.Color;
 
 public class Player extends Sprite {
     private int animationCounter;
@@ -21,7 +20,6 @@ public class Player extends Sprite {
         closedMouth = new Image (0, 0, "pacmanmouthclosed.gif");
         closedMouth.setScale(0.45);
         add(openMouth);
-        // add(new Rectangle(0, 0, 10, 10));
     }
 
     /**
@@ -57,8 +55,12 @@ public class Player extends Sprite {
         }//end of outer else
     }
 
+    /**
+     * Switches between PacMan's open mouth picture sprite and his closed mouth
+     * sprite every 5 frames.
+     */
     private void animate(){
-        if(animationCounter%6 == 0){
+        if(animationCounter%5 == 0){
             whichAnimation = !whichAnimation;
             if(whichAnimation){
                 remove(openMouth);
@@ -71,6 +73,11 @@ public class Player extends Sprite {
         }
     }
 
+    /**
+     * Moves PacMan diagonally if it's cutting a corner, moving it in both its
+     * planned direction for after the turn and the direction that it was moving
+     * before the turn.
+     */
     private void moveDiagonally(){
         Point newPos = getCenter();
         if(getRealDirection() == 0){
@@ -130,6 +137,11 @@ public class Player extends Sprite {
         return false;
     }
 
+    /**
+     * Returns the position that PacMan will be at (assuming there are no obstacles)
+     * if it moves howFar pixels in its planned direction.
+     * @param howFar The amount of pixels that the player's movement is being simulated.
+     */
     private Point getForwardPosition(int howFar){
         double x = getCenter().getX();
         double y = getCenter().getY();
