@@ -1,8 +1,13 @@
 import edu.macalester.graphics.*;
+import java.awt.Color;
 
 public class Player extends Sprite {
+    private int animationCounter;
     private int locked;
     //The direction and realDirection can't be changed as long as locked is above 0.
+    private Image openMouth;
+    private Image closedMouth;
+    private boolean whichAnimation;
 
     /**
      * the player that the user controls (pacman themself)
@@ -10,9 +15,12 @@ public class Player extends Sprite {
     public Player(Point center, int initialDirection, int speed, Tile[][] board) {
         super(center, initialDirection, speed, board);
         locked = 0;
-        Image player = new Image (0, 0, "pacman.gif");
-        player.setScale(0.45);
-        add(player);
+        animationCounter = 0;
+        openMouth = new Image (0, 0, "pacman.gif");
+        openMouth.setScale(0.45);
+        closedMouth = new Image (0, 0, "pacmanmouthclosed.gif");
+        closedMouth.setScale(0.45);
+        add(openMouth);
         // add(new Rectangle(0, 0, 10, 10));
     }
 
@@ -23,8 +31,10 @@ public class Player extends Sprite {
      */
     @Override
     public void updatePos(){
-        double x = getCenter().getX();
-        double y = getCenter().getY();
+        if(!hitsWall(getRealDirection())){
+            animationCounter++;
+            animate();
+        }
         if(super.isInCenter()){
             //If it's in the center of a tile, it's not moving diagonally anyway
             super.updatePos();
@@ -45,6 +55,20 @@ public class Player extends Sprite {
                 }
             }//end of inner else
         }//end of outer else
+    }
+
+    private void animate(){
+        if(animationCounter%6 == 0){
+            whichAnimation = !whichAnimation;
+            if(whichAnimation){
+                remove(openMouth);
+                add(closedMouth);
+            }
+            else{
+                remove(closedMouth);
+                add(openMouth);
+            }
+        }
     }
 
     private void moveDiagonally(){
