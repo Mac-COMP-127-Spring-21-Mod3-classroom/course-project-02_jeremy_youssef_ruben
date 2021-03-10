@@ -147,7 +147,7 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * updates what node the ghost is currently
+     * updates what node the ghost is currently using
     */
     private Node updateActualCurrentNode() {
         for (Node node : allNodes) {
