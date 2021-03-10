@@ -52,9 +52,9 @@ public class Ghost extends Sprite {
             startingNode = actualCurrentNode;
             doAStar();
         }
-
+        
         // get a new target node if there isnt one (starting), if it reached its previous node, or if enough time has passed
-        if (targetNode==null || pathToTarget.size() == 0 || count > 3000) {
+        if (targetNode==null || pathToTarget.size() == 0 || count > 300) {
             // for visualizing a star:
             // for (Node node : allNodes) {
             //     board[node.getyBoardPos()][node.getxBoardPos()].setTileFillColor(Color.BLACK);
