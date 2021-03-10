@@ -119,8 +119,12 @@ public class Sprite extends GraphicsGroup{
      * that it's moving. Note that this is a graphical change only.
      */
     public void turnSprite(){
-        int[] rotations = {-90, 0, 90, -180};
-        setRotation(rotations[realDirection]);
+        int[] rotationsPlayer = {-90, 0, 90, -180};
+        if (this instanceof Player){
+            setRotation(rotationsPlayer[realDirection]);
+        }
+        if (this instanceof Ghost){
+        }
     }
 
     /**
