@@ -27,4 +27,4 @@ The ‘PacMan.java’ class manages the game. ‘Sprite.java’ is the superclas
 
 ## Challenges
 
-As mentioned above, the possiblity of implementing a more advanced ghost AI rather than simple randomizatin was a concern during the planning phase. 
+As mentioned above, the possiblity of implementing a more advanced ghost AI rather than simple randomizatin was a concern during the planning phase. We were also ware of the complications of general movement and making sure the sprites interacted with the tiles as wanted.
