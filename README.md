@@ -15,7 +15,7 @@ In this version, the player has three tries to finish eating all the dots before
 
 ## Algorithm
 
-For the ghost AI, we use a pathfinding algorithm called A* (a star). Each ghost keeps track of all the tiles on the board as “nodes”, and calculates the path with the lowest cost for it to reach its destination. The destinations are randomly selected within a certain radius of the player. As the player collects more dots, this radius decreases, making the ghosts move directly to the player. The path to reach the destination is recalculated each frame to allow for the ghosts to vary from the original intended path. For example, if the original path has the ghost turning around, they can’t do this so the path must be recalculated and it only starts following the path when it doesn't have to turn around to do so anymore. There are cases where the ghost would get “stuck” as in the direction it wants to move to follow the path it has found to the end point is to turn around. In this case, the ghost picks a random direction to move and starts moving that direction.
+This was a major point of the intial planning. For the ghost AI, we use a pathfinding algorithm called A* (a star). Each ghost keeps track of all the tiles on the board as “nodes”, and calculates the path with the lowest cost for it to reach its destination. The destinations are randomly selected within a certain radius of the player. As the player collects more dots, this radius decreases, making the ghosts move directly to the player. The path to reach the destination is recalculated each frame to allow for the ghosts to vary from the original intended path. For example, if the original path has the ghost turning around, they can’t do this so the path must be recalculated and it only starts following the path when it doesn't have to turn around to do so anymore. There are cases where the ghost would get “stuck” as in the direction it wants to move to follow the path it has found to the end point is to turn around. In this case, the ghost picks a random direction to move and starts moving that direction.
 
 ## Movement
 
@@ -23,4 +23,8 @@ The player and ghosts each move two pixels per frame. If the player presses a ke
 
 ## Implementation
 
-The ‘PacMan.java’ class manages the game. ‘Sprite.java’ is the superclass
+The ‘PacMan.java’ class manages the game. ‘Sprite.java’ is the superclass that encompasses the 'Player.java' and 'Ghost.java' classes, where most of their characteristcs are defined. The 'Tile.java' class manages assigning the tiles different types based on their functionality.
+
+## Challenges
+
+As mentioned above, the possiblity of implementing a more advanced ghost AI rather than simple randomizatin was a concern during the planning phase. 
