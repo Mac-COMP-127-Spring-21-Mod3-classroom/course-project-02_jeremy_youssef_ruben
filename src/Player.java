@@ -1,5 +1,10 @@
 import edu.macalester.graphics.*;
 
+/**
+ * Handles logic that differentiates the player from the ghosts.
+ * 
+ * @author Jeremy Hubinger, Ruben Escobar, Youssef Aithmad
+ */
 public class Player extends Sprite {
     private int animationCounter;
     private int locked;

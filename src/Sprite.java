@@ -1,5 +1,10 @@
 import edu.macalester.graphics.*;
 
+/**
+ * Handles shared logic for ghosts and PacMan.
+ * 
+ * @author Jeremy Hubinger, Ruben Escobar, Youssef Aithmad
+ */
 public class Sprite extends GraphicsGroup{
     private int direction;
     //direction is the direction that the sprite is planned to move,

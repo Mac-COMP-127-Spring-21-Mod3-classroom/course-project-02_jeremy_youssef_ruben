@@ -5,8 +5,11 @@ import java.awt.Color;
 
 import edu.macalester.graphics.*;
 
-//Credit for how Pacman works: https://www.gamasutra.com/view/feature/3938/the_pacman_dossier.php?print=1
-
+/**
+ * Runs the game of PacMan, keeping track of all objects and the layout.
+ * @author Jeremy Hubinger, Ruben Escobar, Youssef Aithmad
+ * Credit for how Pacman works: https://www.gamasutra.com/view/feature/3938/the_pacman_dossier.php?print=1
+ */
 public class PacMan {
     private final Tile[][] board = new Tile[ROWS][COLS];
     public static final int ROWS = 31;
@@ -83,6 +86,10 @@ public class PacMan {
         updateText();
     }
 
+    /**
+     * Set the position of the text describing the player's life and point counts, and
+     * updates their values.
+     */
     private void updateText() {
         pointsText.setText("Points: " + numPoints*100);
         livesText.setText("Lives: " + lives);
@@ -90,6 +97,9 @@ public class PacMan {
         livesText.setCenter(CANVAS_WIDTH - livesText.getWidth(), CANVAS_HEIGHT + CANVAS_Y_OFFSET/2);
     }
 
+    /**
+     * Resets the life and point text displays.
+     */
     private void resetTextDisplays() {
         pointsText = new GraphicsText();
         livesText = new GraphicsText();
@@ -104,6 +114,9 @@ public class PacMan {
         canvas.add(pointsText);
     }
 
+    /**
+     * Determins whether or not the player has collided with a ghost.
+     */
     private void checkLost() {
         for (Ghost ghost : ghosts) {
             if (Math.abs(player.getCenter().getX() - ghost.getCenter().getX()) < TILE_SIDE_LENGTH/2) {
@@ -115,12 +128,18 @@ public class PacMan {
         }
     }
 
+    /**
+     * Checks whether or not the player has eaten every dot.
+     */
     private void checkWon() {
         if (numPoints == totalDots) {
             winGame();
         }
     }
 
+    /**
+     * Resets all values and objects.
+     */
     private void resetGame() {
         canvas.removeAll();
         numPoints = 0;
@@ -134,6 +153,10 @@ public class PacMan {
         resetTextDisplays();
     }
 
+    /**
+     * Creates a new PacMan to replace the old one and sets it back
+     * in its starting position.
+     */
     private void resetPlayer() {
         if (player != null) {
             canvas.remove(player);
@@ -153,6 +176,10 @@ public class PacMan {
         resetGame();
     }
 
+    /**
+     * Subtracts a life and resets the ghosts and players. Ends the game if
+     * the player runs out of lives.
+     */
     private void loseLife() {
         lives--;
         if (lives == 0) {
@@ -222,6 +249,9 @@ public class PacMan {
         }
     }
 
+    /**
+     * Removes all ghosts and replaces them with new ghosts.
+     */
     private void resetGhosts() {
         for (Ghost ghost : ghosts) {
             canvas.remove(ghost);

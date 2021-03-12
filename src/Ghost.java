@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Handles logic specific to the ghosts and not the player.
+ * 
+ * @author Jeremy Hubinger, Ruben Escobar, Youssef Aithmad
+ */
 public class Ghost extends Sprite {
     private Random rand = new Random();
     private Node targetNode=null;
@@ -19,7 +24,7 @@ public class Ghost extends Sprite {
     private int count = 0;
 
     /**
-     * a ghost in the game of pacman
+     * A ghost in the game of pacman, which will chase down and try to eliminate the player.
      * @param center the spot to spawn the ghost
      * @param initialDirection 0-3, the direction the ghost should begin by traveling
      * @param board the board that the game is being played on
@@ -33,8 +38,8 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * the ghost's updatePos function is responsible for telling the ghost where to go to follow its path
-     * at the end of this method, it calls its super's updatePos function
+     * The ghost's updatePos function is responsible for telling the ghost where to go to follow its path.
+     * At the end of this method, it calls its super's updatePos function
      */
     @Override
     public void updatePos() {
@@ -107,8 +112,8 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * this function is called if the ghost is stuck (if it wants to turn around and is hitting a wall)
-     * it turns in some direction that is not the direction it came from (the parameter given)
+     * This function is called if the ghost is stuck (if it wants to turn around and is hitting a wall).
+     * It turns in some direction that is not the direction it came from (the parameter given)
      * and in a direction that does not hit a wall
      */
     private void dontTurnAround(int directionNotToGo) {
@@ -204,9 +209,9 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * gets the absolute difference between the two numbers given
-     * the given numbers should be positions on the board
-     * this function accounts for wrapping around the board
+     * Gets the absolute difference between the two numbers given.
+     * The given numbers should be positions on the board.
+     * This function accounts for wrapping around the board.
      */
     private double getDifference(double n, double l, boolean isX) {
         int toCheck = isX ? PacMan.COLS : PacMan.ROWS;
@@ -215,8 +220,8 @@ public class Ghost extends Sprite {
     }
 
     /**
-     * this is the hueristic function that a* uses to determine what path to take
-     * it takes two nodes and returns the absolute distance between them
+     * This is the hueristic function that a* uses to determine what path to take.
+     * It takes two nodes and returns the absolute distance between them.
      */
     private double getDistance(Node currentNode, Node neighbour) {
         return ((getDifference(neighbour.getxBoardPos(), currentNode.getxBoardPos(), true)) + (getDifference(neighbour.getyBoardPos(), currentNode.getyBoardPos(), false)));
@@ -224,7 +229,7 @@ public class Ghost extends Sprite {
 
     /**
      * this function is called once a* has found a path.
-     * this traces the path back up through the parent nodes of each node
+     * this traces the path back up through the parent nodes of each node.
      * since a* updates the parent node of the end node to be the one on the path, and that node's parent
      * to be the next one on the path, this functino retraces that and puts the nodes (in order)
      * into the instance variable pathToTarget
@@ -241,7 +246,7 @@ public class Ghost extends Sprite {
 
     /**
      * credit to this tutorial for some of the code (adapted for java and pacman by us): https://www.youtube.com/watch?v=mZfyt03LDH4
-     * implementation of the a* pathfinding algorithm
+     * implementation of the a* pathfinding algorithm.
      * this function's purpose is to update the instance variable pathToTargetNode
      */
     private void doAStar() {
